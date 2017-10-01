@@ -1,0 +1,126 @@
+<div class="module-head">Register</div>
+<div>
+<?php 
+	if(isset($_SESSION['OPERATION_RESULT'])) {
+		$result = $_SESSION['OPERATION_RESULT'];
+		echo '<div class="'.$result['class'].'">'.$result['message'].'</div>';
+		unset($_SESSION['OPERATION_RESULT']);
+	}
+	?>
+	<?php 
+	$form = $this->beginWidget('CActiveForm', array(
+			'id' => 'users-form',
+			'enableAjaxValidation' => true
+	));
+	?>
+	<table class="simple-form">
+		<tr class="seperate">
+			<td colspan="2"><div>Login Information</div></td>
+		</tr>
+		<tr>
+			<td class="column-left" width="20%">Username</td>
+			<td class="column-right"><?php echo $form->textField(UserLogin::model(), 'username', array('size' => 20, 'maxlength' => 20)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left" width="20%">Password</td>
+			<td class="column-right"><?php echo $form->passwordField(UserLogin::model(), 'password', array('size' => 20, 'maxlength' => 20)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left" width="20%">Re - Password</td>
+			<td class="column-right"><input type="password" name="re-password"
+				maxlength="20" size="20"></td>
+		</tr>
+		<tr>
+		<td class="column-left">Email</td>
+			<td class="column-right"><?php echo $form->textField(UserLogin::model(), 'email', array('size' => 20, 'maxlength' => 255)); ?>
+			</td>
+		</tr>
+		<tr class="seperate">
+			<td colspan="2"><div>Personal Information</div></td>
+		</tr>
+		<tr>
+			<td class="column-left">Personal Card ID</td>
+			<td class="column-right"><?php echo $form->textField(UserInformation::model(), 'personal_card_id', array('size' => 20, 'maxlength' => 13)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Personal Title</td>
+			<td class="column-right"><?php echo $form->textField(UserInformation::model(), 'personal_title', array('size' => 20, 'maxlength' => 255)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">First Name</td>
+			<td class="column-right"><?php echo $form->textField(UserInformation::model(), 'first_name', array('size' => 20, 'maxlength' => 255)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Last Name</td>
+			<td class="column-right"><?php echo $form->textField(UserInformation::model(), 'last_name', array('size' => 20, 'maxlength' => 255)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Gender</td>
+			<td class="column-right"><select name="UserInformation[gender]">
+					<option value="">--Select--</option>
+					<option value="M">Male</option>
+					<option value="F">Female</option>
+			</select>
+			</td>
+		</tr>
+		<tr class="seperate">
+			<td colspan="2"><div>Contact Information</div></td>
+		</tr>
+		<tr>
+			<td class="column-left">Address Line 1</td>
+			<td class="column-right"><?php echo $form->textField(UserInformation::model(), 'address1', array('size' => 20, 'maxlength' => 255)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Address Line 2</td>
+			<td class="column-right"><?php echo $form->textField(UserInformation::model(), 'address2', array('size' => 20, 'maxlength' => 255)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Sub-District</td>
+			<td class="column-right"><?php echo $form->textField(UserInformation::model(), 'sub_district', array('size' => 20, 'maxlength' => 255)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">District</td>
+			<td class="column-right"><?php echo $form->textField(UserInformation::model(), 'district', array('size' => 20, 'maxlength' => 255)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Province</td>
+			<td class="column-right"><?php echo $form->textField(UserInformation::model(), 'province', array('size' => 20, 'maxlength' => 255)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Postal Code</td>
+			<td class="column-right"><?php echo $form->textField(UserInformation::model(), 'postal_code', array('size' => 20, 'maxlength' => 5)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Phone</td>
+			<td class="column-right"><?php echo $form->textField(UserInformation::model(), 'phone', array('size' => 20, 'maxlength' => 20)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Mobile</td>
+			<td class="column-right"><?php echo $form->textField(UserInformation::model(), 'mobile', array('size' => 20, 'maxlength' => 20)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left"></td>
+			<td class="column-right"><input type="submit" name="add_user"
+				value="Submit" /><input type="reset" value="Cancel" /></td>
+		</tr>
+	</table>
+	<?php $this->endWidget(); ?>
+</div>
+
+
+
+

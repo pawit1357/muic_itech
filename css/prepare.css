@@ -1,0 +1,97 @@
+@charset "utf-8";
+.barcode-area {
+	background: #EDEDED;
+	boder-radius:3px;
+	height: 94px
+}
+
+.barcode-area .barcode-status{
+	float: left;
+	width: 100px;
+	height: 80px;
+	padding: 5px;	
+	border-radius: 3px; 
+}
+
+.barcode-area .ready{
+	background: #96FFAD;
+	border: 2px solid #058721;
+}
+
+.barcode-area .ready .text{
+	margin-top: 20px;
+	font-size: 25px;
+	text-align: center;
+	color: #058721
+}
+
+.barcode-area .working{
+	background: #FF9E9E;
+	border: 2px solid #800808;
+}
+
+.barcode-area .working .text{
+	margin-top: 20px;
+	font-size: 25px;
+	text-align: center;
+	color: #800808
+}
+
+#barcode{
+	font-size: 20px;
+	margin-left: 10px;
+	margin-top: 5px;
+	width: 540px;
+	height: 30px;
+	background-color: #FBFBFB
+}
+
+#last-scan-result{
+	font-size: 14px;
+	padding-left: 10px;
+	margin-top: 10px;
+	float: left;
+	width: 500px;
+}
+
+.eq-detail-p{
+	border-radius:3px;
+	padding: 2px 5px 5px 5px;
+	margin-top: 2px;
+}
+
+.incomplete{
+	background: #FF9E9E;
+}
+.complete{
+	background: #96FFAD;
+}
+
+.eq-item {
+	background: #EDEDED;
+	padding: 2px 5px 2px 5px;
+	margin-top: 2px;
+}
+.eq-item .left{
+	float: left;
+	width: 400px;
+	text-align: left;
+}
+.eq-item .manage {
+	float: right;
+	width: 40px;
+	text-align: right;
+}
+
+.eq-item .manage .removeBtn{
+	margin-right: 10px;
+	display: block;
+	width: 16px;
+	height: 16px;
+	background: #FFFFFF url(../images/cross.png) no-repeat top center;
+}
+
+.red{color: #D70000}
+
+.green{color: #058721}
+
