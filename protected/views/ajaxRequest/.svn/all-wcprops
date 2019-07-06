@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/857/trunk/itech_av4/protected/views/ajaxRequest
+END
+room-schedule.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/ajaxRequest/room-schedule.php
+END
+request-service-other.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/ajaxRequest/request-service-other.php
+END
+request_service_type_detail.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/ajaxRequest/request_service_type_detail.php
+END
+classroom_request_booking.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/ajaxRequest/classroom_request_booking.php
+END
+request-borrow-executive-approve.php
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/ajaxRequest/request-borrow-executive-approve.php
+END
+available-classroom-booking-period_meeting.php
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/!svn/ver/857/trunk/itech_av4/protected/views/ajaxRequest/available-classroom-booking-period_meeting.php
+END
+request_equipment_type_list.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/854/trunk/itech_av4/protected/views/ajaxRequest/request_equipment_type_list.php
+END
+available-classroom-booking-period.php
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/!svn/ver/857/trunk/itech_av4/protected/views/ajaxRequest/available-classroom-booking-period.php
+END
+available-room-schedule-meeting.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/ajaxRequest/available-room-schedule-meeting.php
+END
+equipment_in_room.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/ajaxRequest/equipment_in_room.php
+END
+available-room-schedule.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/ajaxRequest/available-room-schedule.php
+END
+booking-attr.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/ajaxRequest/booking-attr.php
+END

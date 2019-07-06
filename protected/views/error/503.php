@@ -1,6 +1,3 @@
-<?php
-echo Yii::app()->request->getParam('errMsg');
-?>
 <br>
 <h1>Service Unavailable</h1>
 <h4>The server is currently unable to handle the request due to a temporary overloading or maintenance of the server<h4>

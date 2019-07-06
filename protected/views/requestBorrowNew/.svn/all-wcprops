@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/860/trunk/itech_av4/protected/views/requestBorrowNew
+END
+prepare.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/906/trunk/itech_av4/protected/views/requestBorrowNew/prepare.php
+END
+main.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/909/trunk/itech_av4/protected/views/requestBorrowNew/main.php
+END
+print_themal.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/881/trunk/itech_av4/protected/views/requestBorrowNew/print_themal.php
+END
+approve.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/813/trunk/itech_av4/protected/views/requestBorrowNew/approve.php
+END
+print.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/905/trunk/itech_av4/protected/views/requestBorrowNew/print.php
+END
+approve_result.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/requestBorrowNew/approve_result.php
+END
+return.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/854/trunk/itech_av4/protected/views/requestBorrowNew/return.php
+END
+approve_item.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/884/trunk/itech_av4/protected/views/requestBorrowNew/approve_item.php
+END
+borrow.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/897/trunk/itech_av4/protected/views/requestBorrowNew/borrow.php
+END
+view.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/909/trunk/itech_av4/protected/views/requestBorrowNew/view.php
+END

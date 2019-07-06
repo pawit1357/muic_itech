@@ -72,6 +72,10 @@ class UserController extends CController {
 							$model->isApprover_1 = (empty ( $isApprove_1 ) ? "" : $isApprove_1);
 							$model->isApprover_2 = (empty ( $isApprove_2 ) ? "" : $isApprove_2);
 							$model->ApproverType = (empty ( $ApproverType ) ? "" : $ApproverType);
+							$model->ApproverType = (empty ( $ApproverType ) ? "" : $ApproverType);
+							//$model->bypass_ldap = (empty ( $bypass_ldap ) ? "" : $bypass_ldap);
+							
+							
 							$model->password = md5 ( $user );
 							$model->status = "ACTIVE";
 							$model->create_by = "1";
@@ -246,6 +250,8 @@ class UserController extends CController {
 			$userLogin = new UserLogin ();
 			$userLogin->attributes = $_POST ['UserLogin'];
 			$userLogin->password = md5 ( $userLogin->password );
+			
+			
 			try {
 				
 				if ($userLogin->save ()) {
@@ -332,7 +338,7 @@ class UserController extends CController {
 			}
 			$userLogin->attributes = $_POST ['UserLogin'];
 			
-			// var_dump($userLogin->attributes);
+
 			try {
 				if ($userLogin->update ()) {
 					$userInfo = UserInformation::model ()->findByPk ( $userLogin->id );
@@ -484,7 +490,6 @@ class UserController extends CController {
 		if ($this->_model === null) {
 			if (isset ( $_GET ['id'] ))
 				$this->_model = UserLogin::model ()->findbyPk ( $_GET ['id'] );
-			
 			if ($this->_model === null)
 				throw new CHttpException ( 404, 'The requested page does not exist.' );
 		}

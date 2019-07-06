@@ -1,0 +1,136 @@
+<span class="module-head">Approve</span>
+<div>
+	<div class="search-box">
+		<?php
+		$form = $this->beginWidget ( 'CActiveForm', array (
+				'id' => 'room-form',
+				'method' => 'get',
+				'action' => '',
+				'enableAjaxValidation' => false 
+		) );
+		?>
+		<input type="text" name="search_text"
+			value="<?php echo $_GET['search_text']?>">
+		<?php $this->endWidget(); ?>
+		<br>
+	</div>
+</div>
+<br>
+<br>
+<br>
+<div class="simple-grid">
+	<table class="items">
+		<thead>
+			<tr>
+				<th width="5%">#</th>
+				<th width="10%">Doc No.</th>
+				<th>Name</th>
+				<th width="14%">Request Date</th>
+				<th width="13%">Return Date</th>
+				<!-- <th width="10%">Department</th>  -->
+				<th width="13%">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			$counter = 1;
+			$dataProvider = $data->search ();
+			foreach ( $dataProvider->data as $request ) {
+				?>
+			<tr class="line-<?php echo $counter%2 == 0 ? '1' : '2'?>">
+				<td class="center"><?php echo GridUtil::getDataIndex($dataProvider, $counter++) ?></td>
+				<td class="center"><?php echo $request->DocumentNo?>
+				</td>
+				<td class="center"><?php echo $request->user_login->user_information->first_name?>
+				</td>
+				<td class="center"><?php echo DateTimeUtil::getDateFormat($request->from_date, "dd MM yyyy")?>
+				</td>
+				<td class="center"><?php echo DateTimeUtil::getDateFormat($request->thru_date, "dd MM yyyy")?>
+				</td>
+				<!-- <td class="center">FA</td> -->
+				<td class="center"><a title="Approve"
+					href="<?php echo Yii::app()->CreateUrl('RequestBorrowNew/Approve/id/'.$request->id)?>">Process</a>
+				</td>
+			</tr>
+			<?php
+			
+}
+			if ($counter == 1) {
+				echo '<tr><td colspan="5"><i>- No item found -</i></td></tr>';
+			}
+			?>			
+		</tbody>
+	</table>
+	<div class="paging">
+		<?php GridUtil::RenderPageButton($this, $dataProvider); ?>
+	</div>
+</div>
+
+
+<?php
+/*
+ * $this->widget('zii.widgets.grid.CGridView', array(
+ * 'id' => 'my-model-grid',
+ * 'dataProvider' => $data->search(),
+ * 'ajaxUpdate'=>true,
+ * 'columns' => array(
+ * array(
+ * 'header'=>'#',
+ * 'value'=>'$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1', // row is zero based
+ * 'htmlOptions'=>array('width'=>'5%', 'align'=>'center'),
+ * ),
+ * array(
+ * 'header'=>'User',
+ * 'value'=>'$data->user_login->user_information->first_name',
+ * 'htmlOptions'=>array('width'=>'5%', 'align'=>'left'),
+ * ),
+ * array(
+ * 'header'=>'Req. Date',
+ * 'value'=>'DateTimeUtil::getDateFormat($data->create_date, "dd/MM/yyyy");',
+ * 'htmlOptions'=>array('width'=>'5%', 'align'=>'center'),
+ * ),
+ * array(
+ * 'header'=>'Use Date',
+ * 'value'=>'DateTimeUtil::getDateFormat($data->from_date, "dd/MM/yyyy");',
+ * 'htmlOptions'=>array('width'=>'5%', 'align'=>'center'),
+ * ),
+ * array(
+ * 'header'=>'Return Date',
+ * 'value'=>'DateTimeUtil::getDateFormat($data->thru_date, "dd/MM/yyyy");',
+ * 'htmlOptions'=>array('width'=>'5%', 'align'=>'center'),
+ * ),
+ * array(
+ * 'header'=>'Department/Major',
+ * 'value'=>'FA',
+ * 'htmlOptions'=>array('width'=>'5%', 'align'=>'left'),
+ * ),
+ * array(
+ * 'header'=>'Action',
+ * 'class'=>'CButtonColumn',
+ * 'header'=>'Approve',
+ * 'template'=>'{view} {Approve} {Disapprove}',
+ * 'htmlOptions'=>array('width'=>'15%', 'align'=>'center'),
+ * 'buttons'=>array
+ * (
+ * 'view' => array
+ * (
+ * 'visible'=>'UserLoginUtil::hasPermission(array("FULL_ADMIN", "VIEW_USER"))',
+ * ),
+ * 'Approve' => array
+ * (
+ * 'visible'=>'UserLoginUtil::hasPermission(array("FULL_ADMIN"))',
+ * 'url' => 'Yii::app()->createUrl("/RequestBorrowNew/ApproveRequest/")."/id/".$data->id',
+ * ),
+ * 'Disapprove' => array
+ * (
+ * 'visible'=>'UserLoginUtil::hasPermission(array("FULL_ADMIN"))',
+ * 'url' => 'Yii::app()->createUrl("/RequestBorrowNew/DisapproveRequest/")."/id/".$data->id',
+ * ),
+ * ),
+ * ),
+ * ),
+ * ));
+ */
+?>
+<br>
+

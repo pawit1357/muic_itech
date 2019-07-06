@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/813/trunk/itech_av4/protected/views/management
+END
+checkAlertToSocialMedia.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/management/checkAlertToSocialMedia.php
+END
+forgetPassword.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/management/forgetPassword.php
+END
+login.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/management/login.php
+END
+main.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/management/main.php
+END
+resetPassword.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/management/resetPassword.php
+END
+Copy of login.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/management/Copy%20of%20login.php
+END
+changePassword.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/management/changePassword.php
+END
+bkk_login.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/management/bkk_login.php
+END
+editProfile.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/813/trunk/itech_av4/protected/views/management/editProfile.php
+END
+register.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/management/register.php
+END

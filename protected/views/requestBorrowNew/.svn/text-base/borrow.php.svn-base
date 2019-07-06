@@ -1,0 +1,314 @@
+﻿<?php 
+/*
+ $eqs = $_POST['eqs'];
+if(count($eqs) > 0) {
+foreach($eqs as $key => $val) {
+$eqType = EquipmentType::model()->findByPk($key);
+echo $eqType->name.'==='.$val . '--<br>';
+}
+}
+*/
+?>
+
+
+<div class="module-head">
+	<span>Borrow</span>
+</div>
+
+<link
+	rel="stylesheet"
+	href="<?php echo Yii::app()->request->baseUrl;?>/css/bootstrap.css">
+<!-- Generic page styles -->
+<link
+	rel="stylesheet"
+	href="<?php echo Yii::app()->request->baseUrl;?>/jQuery-File-Upload-8.2.1/css/style.css">
+<!-- Bootstrap styles for responsive website layout, supporting different screen sizes -->
+<link
+	rel="stylesheet"
+	href="<?php echo Yii::app()->request->baseUrl;?>/jQuery-File-Upload-8.2.1/css/jquery.fileupload-ui.css">
+<script
+	type="text/javascript"
+	src="<?php echo Yii::app()->request->baseUrl;?>/js/ajax.js"></script>
+<script
+	type="text/javascript"
+	src="<?php echo Yii::app()->request->baseUrl;?>/js/util.js"></script>
+<script
+	type="text/javascript"
+	src="<?php echo Yii::app()->request->baseUrl;?>/js/borrow/request.js"></script>
+<script
+	type="text/javascript"
+	src="<?php echo Yii::app()->request->baseUrl;?>/jQuery-File-Upload-8.2.1/js/vendor/jquery.ui.widget.js"></script>
+<script
+	type="text/javascript"
+	src="<?php echo Yii::app()->request->baseUrl;?>/jQuery-File-Upload-8.2.1/js/jquery.iframe-transport.js"></script>
+<script
+	type="text/javascript"
+	src="<?php echo Yii::app()->request->baseUrl;?>/jQuery-File-Upload-8.2.1/js/jquery.fileupload.js"></script>
+<script type="text/javascript">
+$(function(){	
+
+
+
+	$('#post').submit(function(){
+		
+		return (validateForm() && confirm('Confirm ?'));
+	});
+
+	
+	$( "#EquipmentTypeQty").spinner({min: 0, max: 20, stop: function(event, ui) {$(this).change();}    });
+
+	$( "#from_date" ).datepicker({
+        minDate: 0,
+        dateFormat: "dd-mm-yy",
+        changeMonth: true,
+        numberOfMonths: 1,
+        changeYear: true,
+        onClose: function( selectedDate, inst ) {
+        	selectedDate = getDateFormat(selectedDate, 'yy-mm-dd');
+            var minDate = new Date(Date.parse(selectedDate));
+            var maxDate = new Date(Date.parse(selectedDate));
+            minDate.setDate(minDate.getDate());
+            maxDate.setDate(maxDate.getDate() + 5);
+            $( "#thru_date" ).datepicker( "option", "minDate", minDate);
+            $( "#thru_date" ).datepicker( "option", "maxDate", maxDate);
+            
+            $('#thru_date').val('');
+	 		var date = $('#from_date').datepicker('getDate');
+	        var today = new Date();
+	        var diff = Math.floor(( date - today ) / (1000 * 60 * 60 * 24))+1;
+	        if( diff < 2 ){
+	        	alert('Please borrow 3 day before use date.');
+	        	$('#from_date').val('');
+	        }
+        
+         }
+    });
+
+    $( "#thru_date" ).datepicker({
+        minDate: "+1D",
+       	dateFormat: "dd-mm-yy",
+        changeMonth: true,
+        numberOfMonths: 1,
+        changeYear: true,
+        onClose: function( selectedDate, inst ) {
+        	selectedDate = getDateFormat(selectedDate, 'yy-mm-dd');
+             var maxDate = new Date(Date.parse(selectedDate));
+             maxDate.setDate(maxDate.getDate() - 1);            
+            //$( "#from_date" ).datepicker( "option", "maxDate", maxDate);
+        }
+    });
+	function validateForm(){
+		
+		var validateEventType = $('#type_of_event :selected').val();
+		var validateFromDate = $('#from_date').val();
+		var validateToDate = $('#thru_date').val();
+		var validateDescripton = $('#description').val();
+		var validateSubject = $('#teacher_id :selected').val();
+
+
+		if( validateEventType == 0 ){
+			$('#validateEventType').html('<b style="color:red">* Please select event type.</b>');
+			isResult = false;
+			return false;
+		}else{
+			$('#validateEventType').html('');
+		}
+		if( validateFromDate == "" ){
+			$('#validateFromDate').html('<b style="color:red">* Please enter from date.</b>');
+			isResult = false;
+			return false;
+		}else{
+			$('#validateFromDate').html('');
+		}
+		if( validateToDate == "" ){
+			$('#validateToDate').html('<b style="color:red">* Please enter to date.</b>');
+			isResult = false;
+			return false;
+		}else{
+			$('#validateToDate').html('');
+		}
+		if( validateDescripton == "" ){
+			$('#validateDescripton').html('<b style="color:red">* Please select event type.</b>');
+			isResult = false;
+			return false;
+		}else{
+			$('#validateDescripton').html('');
+		}
+		if( validateSubject == 0 ){
+			$('#validateSubject').html('<b style="color:red">* Please select event type.</b>');
+			isResult = false;
+			return false;
+		}else{
+			$('#validateSubject').html('');
+		}
+		
+       
+ 		var date = $('#from_date').datepicker('getDate');
+        var today = new Date();
+        var diff = Math.floor(( date - today ) / (1000 * 60 * 60 * 24))+1;
+        if( diff < 2 ){
+        	alert('Please borrow 3 day before use date.');
+        	$('#from_date').val('');
+        	 $('#thru_date').val('');
+        	 isResult = false;
+        	return false;
+        }
+	
+	}
+});
+
+</script>
+<script type="text/javascript">
+	$(function(){
+		loadDatePicker('date_picker_1');
+				});
+
+	function changeEquipmentType() {
+		$('#EquipmentTypeQty').val(0)
+		$('#equipment_remain').html('');
+		ajaxUpdateArea('<?php echo Yii::app()->createUrl("AjaxRequest/RequestEquipmentTypeList/id")?>/'
+						+ $('#equipment_type').val(),	'equipment_list', null);
+	}
+
+	function changeEquipmentRemain() {
+		$('#EquipmentTypeQty').val(0)
+		ajaxUpdateArea('<?php echo Yii::app()->createUrl("AjaxRequest/EquipmentRemain/id")?>/'
+						+ $('#equipment_type_list_id').val(),	'equipment_remain', null);
+	}
+	
+	function changeQuntitySpin() {
+		
+		var use = $('#EquipmentTypeQty').val();
+		var remain = $('#equipmentItemRemain').val();
+		
+		//alert( use+'/'+ remain);
+		if( parseInt(use) > parseInt(remain) ){
+			alert('Equipment is out of stock!.');
+			$('#EquipmentTypeQty').val(remain)
+			return false;
+		}
+	}
+	
+</script>
+<?php 
+$subjects = Subject::model()->findAll();
+$eventTypes = EventType::model()->findAll();
+
+$equipmentTypes = EquipmentType::model()->findAll(array('condition'=>"id in(9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27)"));
+?>
+<form method="post" action="">
+	<table class="simple-form">
+		<tr>
+			<td class="column-left" width="25%">Receive date</td>
+			<td class="column-right"><input type="text"
+				name="RequestBorrow[from_date]" id="from_date">
+			</td>
+			<td><div id="validateFromDate"></div></td>
+		</tr>
+		<tr>
+			<td class="column-left">Return Date</td>
+			<td class="column-right"><input type="text"
+				name="RequestBorrow[thru_date]" id="thru_date">
+			</td>
+			<td><div id="validateToDate"></div></td>
+		</tr>
+		<tr>
+			<td class="column-left" valign="top">Place of use</td>
+			<td class="column-right"><Input type='Radio' checked="checked"
+				Name='RequestBorrow[location]' value='WHITHIN_MUIC'>In MUIC <Input
+				type='Radio' Name='RequestBorrow[location]' value='WITHOUT_MUIC'>Outside
+				MUIC</td>
+			<td>
+		
+		</tr>
+		<tr>
+			<td class="column-left">Type of Event</td>
+			<td class="column-right"><select id="type_of_event"
+				name="RequestBorrow[event_type_id]">
+					<option value="">--Select--</option>
+					<?php foreach($eventTypes as $eventType) {?>
+					<option value="<?php echo $eventType->id?>">
+						<?php echo $eventType->name?>
+					</option>
+					<?php }?>
+			</select>
+			</td>
+			<td><div id="validateEventType"></div></td>
+		</tr>
+		<tr>
+			<td class="column-left">Purpose of borrowing</td>
+			<td class="column-right"><textarea name="RequestBorrow[description]"></textarea>
+			</td>
+			<td><div id="validateDescripton"></div></td>
+		</tr>
+		<?php if (UserLoginUtil::areUserRole ( array (
+				UserRoles::STUDENT,
+			) )) {?>
+		<tr>
+			<td class="column-left">Subject</td>
+			<td class="column-right"><select id="teacher_id"
+				name="RequestBorrow[teacher_id]">
+					<option value="">--Select--</option>
+					<?php foreach($subjects as $subject) {?>
+					<option value="<?php echo $subject->teacher_user_id?>">
+						<?php echo $subject->sbj_name ." (" . $subject->user_login->user_information->first_name." )"?>
+					</option>
+					<?php }?>
+			</select>
+			</td>
+			<td><div id="validateSubject"></div></td>
+		</tr>
+		<?php }?>
+
+	</table>
+	<br>
+	<table class="simple-form">
+		<tr>
+			<td align="right">Equipment :</td>
+			<td align="left"><select name="equipment_type" id="equipment_type"
+				onchange="changeEquipmentType()">
+					<option value="">-Select-</option>
+					<?php foreach ($equipmentTypes as $equipmentType){ ?>
+					<option value="<?php echo $equipmentType->id?>">
+						<?php echo $equipmentType->name?>
+					</option>
+					<?php }?>
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">Detail :</td>
+			<td><span id="equipment_list"><select name="equipment_type_list_id"
+					id="equipment_type_list_id">
+						<option value="">-Select-</option>
+				</select> </span></td>
+		</tr>
+		<tr>
+			<td align="right">Quantity :</td>
+			<td><input type="text" readonly="readonly" id="EquipmentTypeQty"
+				value="0" onchange="changeQuntitySpin();" /> <span
+				id="equipment_remain"></span>
+			</td>
+
+		</tr>
+		<tr>
+			<td align="right"></td>
+			<td><input type="button" name="add_equipment" id="add_equipment"
+				width="10px" value="Add Equipment" />
+			</td>
+		</tr>
+	</table>
+	<br>
+	<fieldset>
+		<legend>Equipment List</legend>
+		<div id="equipmentList"></div>
+	</fieldset>
+	<table class="simple-form">
+		<tr>
+			<td align="center"><input type="submit" name="add_request"
+				value="Save" /></td>
+		</tr>
+	</table>
+
+</form>
+

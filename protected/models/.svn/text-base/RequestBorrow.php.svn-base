@@ -1,0 +1,215 @@
+<?php
+
+class RequestBorrow extends CActiveRecord
+{
+	public $view_all_request = false;
+	public $initial = false;
+	public $isOverReturnDate = 0;
+	public $startDateFrom;
+	public $startDateTo;
+	public $endDateFrom;
+	public $endDateTo;
+	public $search_status;
+	
+	public $year_filter;
+	public $month_filter;
+	public $day_filter;
+	public $status_filter;
+	public $show_all_active;
+	public $completed_request;
+	public $approve_filter;
+	public $status_for_approve;
+	public $status_not_finish;
+	public $search_text;
+	/**
+	 * Returns the static model of the specified AR class.
+	 * @return CActiveRecord the static model class
+	 */
+	public function __construct($scenario='insert') {
+		parent::__construct($scenario);
+		$this->year_filter = date("Y") * 1;
+		$this->month_filter = date("m") * 1;
+		$this->day_filter = date("d") * 1;
+	}
+	public static function model($className=__CLASS__)
+	{
+
+		return parent::model($className);
+	}
+
+	public function clearDateFilter()
+	{
+		$this->year_filter = '';
+		$this->month_filter = '';
+		$this->day_filter = '';
+	}
+
+
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return 'request_borrow';
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+				'approver' => array(self::BELONGS_TO, 'UserLogin', 'approve_by'),
+				'user_login' => array(self::BELONGS_TO, 'UserLogin', 'user_login_id'),
+				'event_type' => array(self::BELONGS_TO, 'EventType', 'event_type_id'),
+				'status' => array(self::BELONGS_TO, 'Status', 'status_code'),
+		);
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules() {
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+				array('document_no_search, username_search', 'safe', 'on'=>'search'),
+				array('event_type_id, location, approve_by, chef_email, description, from_date, thru_date,DocumentNo', 'safe'),
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+				'description' => 'Description',
+		);
+	}
+
+	/**
+	 * @param Post the post that this comment belongs to. If null, the method
+	 * will query for the post.
+	 * @return string the permalink URL for this comment
+	 */
+	public function getUrl($post=null)
+	{
+		if($post===null)
+			$post=$this->post;
+		return $post->url.'#c'.$this->id;
+	}
+
+	/**
+	 * This is invoked before the record is saved.
+	 * @return boolean whether the record should be saved.
+	 */
+	protected function beforeSave()
+	{
+		/*
+		 if(parent::beforeSave())
+		 {
+		if($this->isNewRecord)
+			$this->create_time=time();
+		return true;
+		}
+		else
+			return false;
+		*/
+		return true;
+	}
+
+	public function search()
+	{
+		$criteria = new CDbCriteria;
+		
+
+		if (UserLoginUtil::areUserRole (array (UserRoles::ADMIN,UserRoles::STAFF_AV)) ) {
+// 			echo "1::".Date ( "Y-m-d" );
+// 			$criteria->addCondition("t.thru_date >= '" . Date ( "Y-m-d" ) . "' ");
+		}else if(UserLoginUtil::areUserRole (array (UserRoles::STAFF,UserRoles::LECTURER)) ){
+// 			echo "2";
+			$criteria->addCondition(" t.user_login_id = '".UserLoginUtil::getUserLoginId()."' or (t.approve_by = '".UserLoginUtil::getUserLoginId()."' and status_code in ('R_B_NEW_WAIT_APPROVE_1','R_B_NEW_WAIT_APPROVE_2'))");
+
+		}else{
+// 			echo "3";
+			$criteria->addCondition(" t.user_login_id = '".UserLoginUtil::getUserLoginId()."'");
+		}
+
+		if(isset($this->status_for_approve) && $this->status_for_approve) {
+// 			echo "4::"."t.approve_by = '".UserLoginUtil::getUserLoginId()."' and status_code in ('R_B_NEW_WAIT_APPROVE_1','R_B_NEW_WAIT_APPROVE_2') ";
+			$criteria->addCondition("t.approve_by = '".UserLoginUtil::getUserLoginId()."' and status_code in ('R_B_NEW_WAIT_APPROVE_1','R_B_NEW_WAIT_APPROVE_2') ");
+		}
+		
+		if(isset($this->status_filter)){
+// 			echo "5::".$this->status_filter;
+			if($this->status_filter =='WAIT_APPROVE') {
+				$criteria->addCondition("status_code='R_B_NEW_WAIT_APPROVE_1' or status_code='R_B_NEW_WAIT_APPROVE_2'");
+			} else {
+				$criteria->addCondition("status_code='".$this->status_filter."'");
+			}
+		}
+		
+		if($this->search_text != '') {
+// 			echo "6::".$this->search_text;
+			$criteria->addCondition("t.DocumentNo LIKE '%".$this->search_text."%' OR
+					t.user_login_id in (select id from user_login where username like '%".$this->search_text."%')");
+		}
+
+		if($this->search_status != '') {
+// 			echo "7::".$this->search_status;
+			$criteria->addCondition("t.status_code = '".$this->search_status."'");
+		}
+		
+		if($this->initial){
+// 			echo "8::".$this->initial;
+			$criteria->addCondition("t.thru_date >= '" . Date ( "Y-m-d" ) . "' ");
+		}
+		
+		if (isset ( $this->startDateFrom ) && $this->startDateFrom != '') {
+// 			echo "9::".$this->startDateFrom;
+			list($day, $month, $year) = explode('-', $this->startDateFrom);
+			$startDateFrom = $year.'-'.$month.'-'.$day;
+			$criteria->addCondition ("(t.from_date = '" . $startDateFrom . "')");
+
+		}
+
+		if (isset ( $this->endDateFrom ) && $this->endDateFrom != '') {
+// 			echo "10::".$this->endDateFrom;
+			list($day, $month, $year) = explode('-', $this->endDateFrom);
+			$endDateFrom = $year.'-'.$month.'-'.$day;
+			$criteria->addCondition ("(t.thru_date = '" . $endDateFrom . "')");
+			
+		}
+		
+		if (isset ( $this->isOverReturnDate ) && $this->isOverReturnDate == '1') {
+			
+			$criteria->addCondition ("(t.thru_date < '" . Date ( "Y-m-d" ) . "')");
+		}
+		
+
+
+		return new CActiveDataProvider(get_class($this), array(
+		'criteria' => $criteria,
+		'sort' => array(
+		'defaultOrder' => 't.from_date',
+		'attributes'=>array(
+		'document_no_search'=>array(
+		'asc'=>'DocumentNo',
+		'desc'=>'DocumentNo DESC',
+		),
+		'username_search'=>array(
+		'asc'=>'user_login_id',
+		'desc'=>'user_login_id DESC',
+		),
+		'*',
+		),
+		),
+		'pagination' => array(
+		'pageSize' => ConfigUtil::getDefaultPageSize()
+		),
+		));
+	}
+}

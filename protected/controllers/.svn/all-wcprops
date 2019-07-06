@@ -1,0 +1,233 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/860/trunk/itech_av4/protected/controllers
+END
+ApiController.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/ApiController.php
+END
+RoomController.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/RoomController.php
+END
+RequestBorrowNewController.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/908/trunk/itech_av4/protected/controllers/RequestBorrowNewController.php
+END
+RequestBorrowController.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/RequestBorrowController.php
+END
+RequestServiceController.php
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/860/trunk/itech_av4/protected/controllers/RequestServiceController.php
+END
+EquipmentTypeController.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/EquipmentTypeController.php
+END
+PositionController.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/PositionController.php
+END
+ConfirmUserController.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/ConfirmUserController.php
+END
+SkyNotificationController.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/824/trunk/itech_av4/protected/controllers/SkyNotificationController.php
+END
+SubjectController.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/816/trunk/itech_av4/protected/controllers/SubjectController.php
+END
+AppSettingController.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/873/trunk/itech_av4/protected/controllers/AppSettingController.php
+END
+ReportController.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/ReportController.php
+END
+RoleController.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/RoleController.php
+END
+SocialMediaController.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/SocialMediaController.php
+END
+SemesterController.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/SemesterController.php
+END
+SolutionController.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/SolutionController.php
+END
+LinkController.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/LinkController.php
+END
+PeriodGroupController.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/PeriodGroupController.php
+END
+BorrowServiceController.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/893/trunk/itech_av4/protected/controllers/BorrowServiceController.php
+END
+PeriodController.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/PeriodController.php
+END
+WebServiceController.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/860/trunk/itech_av4/protected/controllers/WebServiceController.php
+END
+ServiceTypeItemController.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/ServiceTypeItemController.php
+END
+ManagementController.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/858/trunk/itech_av4/protected/controllers/ManagementController.php
+END
+ApproverController.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/ApproverController.php
+END
+SiteController.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/SiteController.php
+END
+ErrorController.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/816/trunk/itech_av4/protected/controllers/ErrorController.php
+END
+RequestBookingController.php
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/860/trunk/itech_av4/protected/controllers/RequestBookingController.php
+END
+UserController.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/889/trunk/itech_av4/protected/controllers/UserController.php
+END
+EquipmentController.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/816/trunk/itech_av4/protected/controllers/EquipmentController.php
+END
+AdminController.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/AdminController.php
+END
+AjaxRequestController.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/854/trunk/itech_av4/protected/controllers/AjaxRequestController.php
+END
+ServiceTypeController.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/ServiceTypeController.php
+END
+DepartmentController.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/DepartmentController.php
+END
+GalleryController.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/GalleryController.php
+END
+TestController.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/TestController.php
+END
+NewsController.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/NewsController.php
+END
+PresentTypeController.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/PresentTypeController.php
+END
+aps-development.pem
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/771/trunk/itech_av4/protected/controllers/aps-development.pem
+END

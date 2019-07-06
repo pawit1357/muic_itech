@@ -23,7 +23,7 @@ class RequestUtil {
 		mysql_connect ( ConfigUtil::getHostName (), ConfigUtil::getUsername (), ConfigUtil::getPassword () );
 		mysql_select_db ( ConfigUtil::getDbName () );
 		
-		$sql = "SELECT DISTINCT room.id as r_id FROM equipment INNER JOIN room ON equipment.room_id = room.id INNER JOIN equipment_type ON equipment.equipment_type_id = equipment_type.id WHERE equipment_type.id='" . $equipmentTypeId . "'";
+		$sql = "SELECT DISTINCT room.id as r_id FROM equipment INNER JOIN room ON equipment.room_id = room.id INNER JOIN equipment_type ON equipment.equipment_type_id = equipment_type.id WHERE status='A' and equipment_type.id='" . $equipmentTypeId . "'";
 		// echo $sql;
 		$result = mysql_query ( $sql );
 		$count = 0;

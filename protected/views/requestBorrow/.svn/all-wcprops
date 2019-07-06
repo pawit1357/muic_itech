@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/requestBorrow
+END
+check_status.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/requestBorrow/check_status.php
+END
+main.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/requestBorrow/main.php
+END
+update.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/requestBorrow/update.php
+END
+approve.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/requestBorrow/approve.php
+END
+approve_result.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/requestBorrow/approve_result.php
+END
+request.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/requestBorrow/request.php
+END
+confirm.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/requestBorrow/confirm.php
+END
+view.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/requestBorrow/view.php
+END

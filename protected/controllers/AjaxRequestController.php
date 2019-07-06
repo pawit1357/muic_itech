@@ -144,7 +144,7 @@ class AjaxRequestController extends CController {
 		if (date != '') {
 			$date = DateTimeUtil::convertDateFormat ( $date, 'yyyy-mm-dd' );
 		}
-		$condition = "room_group_id = 1";
+		$condition = "status='A' and room_group_id = 1";
 		$unavailableSpecifyRoomIds = RequestUtil::getUnavailableSpecifyRoom ( $date, $timeStart, $timeEnd, null, null );
 		if (count ( $unavailableSpecifyRoomIds ) > 0) {
 			$exceptRoomId = '(';
@@ -226,7 +226,7 @@ class AjaxRequestController extends CController {
 		if (date != '') {
 			$date = DateTimeUtil::convertDateFormat ( $date, 'yyyy-mm-dd' );
 		}
-		$condition = "room_group_id = 2";
+		$condition = "status='A' and room_group_id = 2";
 		$unavailableSpecifyRoomIds = RequestUtil::getUnavailableSpecifyRoom ( $date, $timeStart, $timeEnd, null, null );
 		if (count ( $unavailableSpecifyRoomIds ) > 0) {
 			$exceptRoomId = '(';
@@ -311,8 +311,8 @@ class AjaxRequestController extends CController {
 	public function actionChageEquipmentTypeListByTypeOfEvent() {
 		$id = addslashes ( $_GET ['id'] );
 		
-		// FAA Student,Lecturer
-		if ($id == 6 || $id == 7) {
+		// FAA Student,Student,Lecturer
+		if ($id == 6 || $id == 7 || $id == 8) {
 			$datas = EquipmentType::model ()->findAll ( array (
 					'condition' => "id in(11,12,14,15,16,17,18,21,23,25,26,28,29,30,31,32)" 
 			) );

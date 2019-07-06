@@ -20,7 +20,7 @@ if(UserLoginUtil::isLogin()) {
 		}
 		$strIn = substr($strIn, 0, strlen($strIn) - 1);
 		$strIn = $strIn.')';
-		$rooms = Room::model()->findAll(array('condition' => 'id not in '.$strIn));
+		$rooms = Room::model()->findAll(array('condition' => 'status="A" and id not in '.$strIn));
 		$eventTypes = EventType::model()->findAll();
 		$roomTypes = RoomType::model()->findAll();
 		$presentTypes = PresentType::model()->findAll();

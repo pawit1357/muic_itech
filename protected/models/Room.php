@@ -41,7 +41,7 @@ class Room extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-				array('room_code, room_group_id, name, description', 'safe'),
+				array('room_code, room_group_id, name, description,status', 'safe'),
 		);
 	}
 

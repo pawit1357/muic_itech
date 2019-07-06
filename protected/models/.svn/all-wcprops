@@ -1,0 +1,311 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/860/trunk/itech_av4/protected/models
+END
+RequestBorrowEquipmentTypeItem.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RequestBorrowEquipmentTypeItem.php
+END
+RequestServiceDetail.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RequestServiceDetail.php
+END
+EquipmentCrackedLog.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/EquipmentCrackedLog.php
+END
+Room.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/Room.php
+END
+RequestBookingActivityPresentType.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RequestBookingActivityPresentType.php
+END
+UserLogin.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/884/trunk/itech_av4/protected/models/UserLogin.php
+END
+UsingLog.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/UsingLog.php
+END
+EnumerationType.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/EnumerationType.php
+END
+UserInformation.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/UserInformation.php
+END
+RequestBorrowApproveLink.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RequestBorrowApproveLink.php
+END
+RequestBookingType.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RequestBookingType.php
+END
+RequestBorrow.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/908/trunk/itech_av4/protected/models/RequestBorrow.php
+END
+RequestBorrowEquipmentType.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/854/trunk/itech_av4/protected/models/RequestBorrowEquipmentType.php
+END
+RoomGroup.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RoomGroup.php
+END
+RolePermission.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RolePermission.php
+END
+RequestService.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/860/trunk/itech_av4/protected/models/RequestService.php
+END
+EquipmentTypeList.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/854/trunk/itech_av4/protected/models/EquipmentTypeList.php
+END
+EquipmentType.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/805/trunk/itech_av4/protected/models/EquipmentType.php
+END
+Position.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/Position.php
+END
+RequestBookingActivityDetail.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RequestBookingActivityDetail.php
+END
+SkyNotification.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/822/trunk/itech_av4/protected/models/SkyNotification.php
+END
+Subject.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/802/trunk/itech_av4/protected/models/Subject.php
+END
+StatusGroup.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/StatusGroup.php
+END
+PermissionGroup.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/PermissionGroup.php
+END
+RequestServiceTypeDetail.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RequestServiceTypeDetail.php
+END
+RequestBookingAlertLog.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RequestBookingAlertLog.php
+END
+Status.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/Status.php
+END
+RoomEquipment.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RoomEquipment.php
+END
+EventType.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/EventType.php
+END
+RoomType.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RoomType.php
+END
+Role.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/Role.php
+END
+SocialMedia.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/SocialMedia.php
+END
+Semester.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/Semester.php
+END
+Link.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/Link.php
+END
+UserForgetPasswordRequest.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/UserForgetPasswordRequest.php
+END
+PeriodGroup.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/PeriodGroup.php
+END
+RequestBookingEquipmentType.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RequestBookingEquipmentType.php
+END
+EmailForApprove.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/EmailForApprove.php
+END
+RequestServiceType.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RequestServiceType.php
+END
+Period.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/Period.php
+END
+RoomStaff.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RoomStaff.php
+END
+Enumeration.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/Enumeration.php
+END
+RequestBooking.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/883/trunk/itech_av4/protected/models/RequestBooking.php
+END
+RequestBorrowAlertLog.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/RequestBorrowAlertLog.php
+END
+Equipment.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/805/trunk/itech_av4/protected/models/Equipment.php
+END
+Permission.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/Permission.php
+END
+Setting.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/802/trunk/itech_av4/protected/models/Setting.php
+END
+Department.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/Department.php
+END
+Gallery.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/Gallery.php
+END
+News.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/News.php
+END
+PresentType.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/771/trunk/itech_av4/protected/models/PresentType.php
+END

@@ -1,0 +1,857 @@
+<?php
+/**
+ * SiteController is the default controller to handle user requests.
+ */
+class RequestBorrowNewController extends CController {
+	public $layout = 'management';
+	private $_model;
+
+	/**
+	 * Index action is the default action in a controller.
+	 */
+	public function actionIndex() {
+		// Authen Login
+		if (! UserLoginUtil::isLogin ()) {
+			$this->redirect ( Yii::app ()->createUrl ( 'management/login' ) );
+		}
+		if (! UserLoginUtil::hasPermission ( array (
+				"FULL_ADMIN",
+				"VIEW_REQUEST_BORROW",
+				"VIEW_ALL_REQUEST_BORROW",
+				"CREATE_REQUEST_BORROW",
+				"UPDATE_REQUEST_BORROW",
+				"DELETE_REQUEST_BORROW"
+		) )) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+		$model = new RequestBorrow ();
+		$model->initial = true;
+
+		if(isset($_GET['startDateFrom'])){
+			$model->startDateFrom = addslashes($_GET['startDateFrom']);
+			$model->initial = false;
+		}
+		// 		if(isset($_GET['startDateTo'])){
+		// 			$model->startDateTo = addslashes($_GET['startDateTo']);
+		// 		}
+		if(isset($_GET['endDateFrom'])){
+			$model->endDateFrom = addslashes($_GET['endDateFrom']);
+			$model->initial = false;
+		}
+		// 		if(isset($_GET['endDateTo'])){
+		// 			$model->endDateTo = addslashes($_GET['endDateTo']);
+		// 		}
+		// Set Search Text
+		if(isset($_GET['search_text'])){
+			$model->search_text = addslashes($_GET['search_text']);
+		}
+		if(isset($_GET['search_status'])){
+			$model->search_status = addslashes($_GET['search_status']);
+		}
+		if(isset($_GET['isOverReturnDate'])){
+			$model->isOverReturnDate =addslashes($_GET['isOverReturnDate']);
+		}
+
+
+		//Yii::log('message', 'level', 'category');
+		//Yii::log('anytext', 'trace'); // Shows the stack trace - the first few entries are useful for Yii
+		//Yii::log('Path to file is invalid: '.$path, 'warning'); // Default category is 'application'
+		//Yii::log(array($variables, $to, $be, $shown, $like, $print_r, $output), 'info', 'app.SiteController.Action'); // Useful for showing array contents, just wrap them in array()
+
+
+		//* TEST EMAIL *
+		// 		$key = md5 ( rand ( 0, 2000 ) ) . md5 ( rand ( 0, 2000 ) ) . md5 ( rand ( 0, 2000 ) ) . md5 ( rand ( 0, 2000 ) ) . md5 ( rand ( 0, 2000 ) ) . md5 ( rand ( 0, 2000 ) );
+		// 		$approveUser = UserLogin::model ()->findByPk (184);
+		// 		$content = MailUtil::getApproveMailContent ( $key, $requestBorrow );
+
+		// 		if (isset ( $approveUser->email )) {
+		// 			MailUtil::sendMail ( 'pawit1357@hotmail.com', 'Support AV-Online, Approve Request Booking', $content );
+		// 		}
+
+
+
+
+		$this->render ( 'main', array (
+				'data' => $model
+		) );
+
+	}
+	public function actionBorrow() {
+		// Authen Login
+		if (! UserLoginUtil::isLogin ()) {
+			$this->redirect ( Yii::app ()->createUrl ( 'management/login' ) );
+		}
+		if (! UserLoginUtil::hasPermission ( array (
+				"FULL_ADMIN",
+				"CREATE_REQUEST_BORROW"
+		) )) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+
+		if (isset ( $_POST ['RequestBorrow'] )) {
+
+			$transaction = Yii::app ()->db->beginTransaction ();
+			$eqs = $_POST ['eqs'];
+
+
+			// Add Request
+			$sendApproveMail = false;
+			$lecturerEmail;
+			$nextApproveId = -1;
+
+			$requestBorrow = new RequestBorrow ();
+
+			$requestBorrow->approve_by = UserLoginUtil::getUserLogin()->parent;
+
+			list ( $day, $month, $year ) = explode ( '-', $_POST ['RequestBorrow'] ['from_date'] );
+			$_POST ['RequestBorrow'] ['from_date'] = $year . '-' . $month . '-' . $day;
+			list ( $day, $month, $year ) = explode ( '-', $_POST ['RequestBorrow'] ['thru_date'] );
+			$_POST ['RequestBorrow'] ['thru_date'] = $year . '-' . $month . '-' . $day;
+			$requestBorrow->attributes = $_POST ['RequestBorrow'];
+
+			$requestBorrow->DocumentNo = CommonUtil::getDocumentNo();
+			if(isset($_POST ['RequestBorrow']['teacher_id']) && $_POST ['RequestBorrow']['teacher_id'] != '') {
+				$lecturerEmail = UserLoginUtil::getUserById($_POST ['RequestBorrow']['teacher_id'])->email;
+
+			}
+			
+			
+			
+			$requestBorrow->user_login_id = UserLoginUtil::getUserLoginId ();
+
+			if (UserLoginUtil::areUserRole ( array (UserRoles::ADMIN))){
+				$requestBorrow->status_code = "R_B_NEW_PREPARE";
+			}elseif(UserLoginUtil::areUserRole ( array (UserRoles::LECTURER,UserRoles::STAFF_AV,UserRoles::STAFF))){
+
+				//CASE:: USE SAME DAY
+				if($_POST ['RequestBorrow'] ['from_date'] == $_POST ['RequestBorrow'] ['thru_date']) {
+					if ($requestBorrow->location == 'WHITHIN_MUIC') {
+						$requestBorrow->status_code = "R_B_NEW_PREPARE";
+					} else {
+						$requestBorrow->status_code = "R_B_NEW_WAIT_APPROVE_2";
+						$sendApproveMail = true;
+						//find approver
+						$userApprover = UserLogin::model()->findAll(array('condition'=>"ApproverType in (2) and isApprover_1=1"));
+						if (isset ( $userApprover ) && count ( $userApprover ) > 0) {
+							$nextApproveId = $userApprover[0]->id;
+						}else{
+							echo 'CASE:: USE SAME DAY->Approver is empty.';
+						}
+					}
+				}else{
+					//CASE:: USER MORE 1 DAY
+					$requestBorrow->status_code = "R_B_NEW_WAIT_APPROVE_2";
+					$sendApproveMail = true;
+					//find approver
+					$userApprover = UserLogin::model()->findAll(array('condition'=>"ApproverType in (2) and isApprover_1=1"));
+					if (isset ( $userApprover ) && count ( $userApprover ) > 0) {
+						$nextApproveId = $userApprover[0]->id;
+					}else{
+						echo 'CASE:: USER MORE 1 DAY->Approver is empty.';
+					}
+				}
+
+			}else{
+				//STUDENT CASE
+				$requestBorrow->status_code = "R_B_NEW_WAIT_APPROVE_1";
+				$sendApproveMail = true;
+				//find approver
+				$userApprover = UserLogin::model()->findAll(array('condition'=>"ApproverType in (1) and isApprover_1=1"));
+				if (isset ( $userApprover ) && count ( $userApprover ) > 0) {
+					$nextApproveId = $userApprover[0]->id;
+				}else{
+					echo 'STUDENT CASE->Approver is empty.';
+				}
+			}
+
+			$requestBorrow->approve_by = $nextApproveId;
+			$requestBorrow->create_date = date ( "Y-m-d H:i:s" );
+			$addSuccess = true;
+
+			if ($requestBorrow->save ()) {
+				$model = $requestBorrow;
+
+				if (isset ( $eqs )) {
+					foreach ( $eqs as $equipment => $qty ) {
+
+						$equipId = addslashes ( $equipment );
+						list($equipment_type_id, $equipment_type_list_id) = split(',', $equipId);
+						$requestBorrowEquipmentType = new RequestBorrowEquipmentType ();
+						$requestBorrowEquipmentType->request_borrow_id = $requestBorrow->getPrimaryKey ();
+						$requestBorrowEquipmentType->quantity = addslashes ( $qty );
+						$requestBorrowEquipmentType->equipment_type_list_id = $equipment_type_list_id;
+
+						if (! $requestBorrowEquipmentType->save ()) {
+							$addSuccess = false;
+							break;
+						}
+					}
+				}
+				
+				//Send Mail to owner
+				$content = MailUtil::getBorrowDetailMailContent ( $model );
+				echo  $model->user_login->email ."XX2XX".$content;
+				if (isset ( $model->user_login->email )) {
+					MailUtil::sendMail ( $model->user_login->email, 'Support AV-Online, Request Borrow Result', $content );
+				}
+				//Send Mail to lecturer
+				if (isset ( $lecturerEmail )) {
+					MailUtil::sendMail ( $lecturerEmail, 'Support AV-Online, Request Borrow Result', $content );
+				}
+
+				// Send Mail to approve 1
+				if($sendApproveMail){
+					$key = md5 ( rand ( 0, 2000 ) ) . md5 ( rand ( 0, 2000 ) ) . md5 ( rand ( 0, 2000 ) ) . md5 ( rand ( 0, 2000 ) ) . md5 ( rand ( 0, 2000 ) ) . md5 ( rand ( 0, 2000 ) );
+					$requestBorrowId = $requestBorrow->getPrimaryKey ();
+					$createDate = date ( 'Y-m-d H:i:s' );
+					$status = "ACTIVE";
+					$approveType = "APPROVE_1";
+
+					$requestBorrowApproveLink = new RequestBorrowApproveLink ();
+					$requestBorrowApproveLink->request_key = $key;
+					$requestBorrowApproveLink->request_borrow_id = $requestBorrowId;
+					$requestBorrowApproveLink->create_date = $createDate;
+					$requestBorrowApproveLink->status = $status;
+					$requestBorrowApproveLink->approve_type = $approveType;
+
+					if ($requestBorrowApproveLink->save ()) {
+						$approveUser = UserLogin::model ()->findByPk ( $nextApproveId );
+						$content = MailUtil::getApproveMailContent ( $key, $requestBorrow );
+						if (isset ( $approveUser->email )) {
+							MailUtil::sendMail ( UserLoginUtil::getUserById($nextApproveId)->email, 'Support AV-Online, Approve Request Booking', $content );
+						}
+					}
+				}
+			} else {
+				$addSuccess = false;
+			}
+			
+
+
+			if ($addSuccess) {
+
+				$transaction->commit ();
+				$this->redirect ( Yii::app ()->createUrl ( 'RequestBorrowNew/View/id/' . $requestBorrow->getPrimaryKey () ) );
+				$this->render ( 'borrow', array (
+						'data' => $model
+				) );
+			} else {
+				$transaction->rollback ();
+				$model = new RequestBorrow ();
+				$this->render ( 'borrow', array (
+						'data' => $model
+				) );
+			}
+
+		} else {
+			// Render
+			$this->render ( 'borrow' );
+		}
+	}
+	public function actionView() {
+		// Authen Login
+		if (! UserLoginUtil::isLogin ()) {
+			$this->redirect ( Yii::app ()->createUrl ( 'management/login' ) );
+		}
+		if (! UserLoginUtil::hasPermission ( array (
+				"FULL_ADMIN",
+				"VIEW_REQUEST_BORROW",
+				"VIEW_ALL_REQUEST_BORROW"
+		) )) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+		// Render
+		$model = $this->loadModel ();
+		if (! UserLoginUtil::hasPermission ( array (
+				"FULL_ADMIN",
+				"VIEW_ALL_REQUEST_BORROW"
+		) ) && $model->user_login_id != UserLoginUtil::getUserLoginId ()) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+		$this->render ( 'view', array (
+				'data' => $model
+		) );
+	}
+	public function actionPrepare() {
+		// Authen Login
+		if (! UserLoginUtil::isLogin ()) {
+			$this->redirect ( Yii::app ()->createUrl ( 'management/login' ) );
+		}
+
+		if (! UserLoginUtil::areUserRole ( array (
+				UserRoles::ADMIN,
+				UserRoles::STAFF_AV
+		) )) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+// 		echo "XXX0XXX". $_POST ['eq_item'] ;
+		if (isset ( $_POST ['eq_item'] )) {
+			$id = addslashes ( $_GET ['id'] );
+			$items = $_POST ['eq_item'];
+			$transaction = Yii::app ()->db->beginTransaction ();
+			$addSuccess = true;
+// 			echo "XXX1XXX";
+			foreach ( $items as $eId => $eTypeId ) {
+
+				$criteria = new CDbCriteria ();
+				$criteria->condition = "request_borrow_id = '" . $id . "' and equipment_type_list_id='" . $eTypeId . "'";
+				$requestBorrowEquipmentTypes = RequestBorrowEquipmentType::model ()->findAll ( $criteria );
+
+				if (isset ( $requestBorrowEquipmentTypes ) && count ( $requestBorrowEquipmentTypes ) > 0) {
+
+					$requestBorrowEquipmentType = $requestBorrowEquipmentTypes[0];
+
+				} else {
+
+					$requestBorrowEquipmentType = new RequestBorrowEquipmentType ();
+					$requestBorrowEquipmentType->request_borrow_id = $id;
+					$requestBorrowEquipmentType->equipment_type_list_id = $eTypeId;
+					$requestBorrowEquipmentType->quantity = 1;
+					if ($requestBorrowEquipmentType->save ()) {
+						$requestBorrowEquipmentType->id = $requestBorrowEquipmentType->getPrimaryKey ();
+					} else {
+						$addSuccess = false;
+					}
+
+				}
+
+				$criteria = new CDbCriteria ();
+				$criteria->condition = "equipment_id = '" . $eId . "' and request_borrow_equipment_type_id='" . $requestBorrowEquipmentType->id . "'";
+				$requestItems = RequestBorrowEquipmentTypeItem::model ()->findAll ( $criteria );
+				if (count ( $requestItems ) <= 0) {
+					$model = new RequestBorrowEquipmentTypeItem ();
+					$model->request_borrow_equipment_type_id = $requestBorrowEquipmentType->id;
+					$model->equipment_id = $eId;
+					if (! $model->save ()) {
+						$addSuccess = false;
+					}
+				}
+
+			}
+// 			echo "XXX2XXX";
+			$countFinish = true;
+			$requestEquipmentTypes = RequestBorrowEquipmentType::model ()->findAll ( array (
+					'condition' => "request_borrow_id='" . $id . "'"
+			) );
+
+			foreach ( $requestEquipmentTypes as $requestEquipmentType ) {
+				$requestQty = $requestEquipmentType->quantity;
+				$requestEquipmentTypeItems = RequestBorrowEquipmentTypeItem::model ()->findAll ( array (
+						'condition' => "request_borrow_equipment_type_id='" . $requestEquipmentType->id . "'"
+				) );
+				// 				echo count ( $requestEquipmentTypeItems ) .",". $requestQty;
+				if (count ( $requestEquipmentTypeItems ) < $requestQty) {
+					$countFinish = false;
+					break;
+				}
+			}
+// 			echo "XXX3XXX";
+			if (!$countFinish) {
+				$status = 'R_B_NEW_READY_MISSING';
+			} else {
+				$status = 'R_B_NEW_READY';
+			}
+
+			if ($addSuccess) {
+				$requestBorrow = RequestBorrow::model ()->findbyPk ( $id );
+				if (isset ( $requestBorrow )) {
+					$requestBorrow->status_code = $status;
+					$requestBorrow->save ();
+				}
+				$transaction->commit ();
+				$this->redirect ( Yii::app ()->createUrl ( 'RequestBorrowNew/View/id/' . $id ) );
+			} else {
+				$transaction->rollback ();
+				$this->redirect ( Yii::app ()->createUrl ( 'RequestBorrowNew/Prepare/id/' . $id ) );
+			}
+
+
+		} else {
+			$data = RequestBorrow::model ()->findByPk ( addslashes ( $_GET ['id'] ) );
+			$this->render ( 'prepare', array (
+					'data' => $data
+			) );
+		}
+	}
+	public function actionReturn() {
+		// Authen Login
+		if (! UserLoginUtil::isLogin ()) {
+			$this->redirect ( Yii::app ()->createUrl ( 'management/login' ) );
+		}
+
+		if (! UserLoginUtil::areUserRole ( array (
+				UserRoles::ADMIN,
+				UserRoles::STAFF_AV
+		) )) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+
+		if (isset ( $_POST ['save_request'] ) && $_POST ['save_request'] == 'Save') {
+			$id = addslashes ( $_GET ['id'] );
+			$items = $_POST ['eq_items'];
+			$transaction = Yii::app ()->db->beginTransaction ();
+			$addSuccess = true;
+
+			// clear all return
+			$criteria = new CDbCriteria ();
+			$criteria->condition = "request_borrow_id = '" . $id . "'";
+			$requestBorrowEquipmentTypes = RequestBorrowEquipmentType::model ()->findAll ( $criteria );
+			if (isset ( $requestBorrowEquipmentTypes ) && count ( $requestBorrowEquipmentTypes > 0 )) {
+				foreach ( $requestBorrowEquipmentTypes as $requestBorrowEquipmentType ) {
+					$criteria = new CDbCriteria ();
+					$criteria->condition = "request_borrow_equipment_type_id = '" . $requestBorrowEquipmentType->id . "'";
+					$requestBorrowEquipmentTypeItems = RequestBorrowEquipmentTypeItem::model ()->findAll ( $criteria );
+					foreach ( $requestBorrowEquipmentTypeItems as $requestBorrowEquipmentTypeItem ) {
+						$requestBorrowEquipmentTypeItem->return_date = '';
+						$requestBorrowEquipmentTypeItem->return_price = '0';
+						$requestBorrowEquipmentTypeItem->broken_price = '0';
+						$requestBorrowEquipmentTypeItem->save ();
+					}
+				}
+			}
+
+			// set Return
+			if (isset ( $items )) {
+				foreach ( $items as $eTypeId => $eId ) {
+					$criteria = new CDbCriteria ();
+					$criteria->condition = "t.equipment_id = '" . $eId . "' and request_borrow_equipment_type.request_borrow_id = '" . $id . "'";
+					$requestItems = RequestBorrowEquipmentTypeItem::model ()->with ( array (
+							'request_borrow_equipment_type'
+					) )->findAll ( $criteria );
+					if (isset ( $requestItems ) && count ( $requestItems ) > 0) {
+						foreach ( $requestItems as $requestItem ) {
+							$model = $this->loadModel ();
+							$borrow = strtotime ( $model->thru_date );
+							$current = strtotime ( date ( 'Y-m-d' ) );
+							$day_diff = floor ( ($current - $borrow) / 60 / 60 / 24 );
+							if ($day_diff > 0) {
+								$setting = Setting::model()->findByPk(1);
+								$requestItem->return_price = $day_diff * $setting->returnLatePricePerDay;
+							}
+
+							if (isset ( $_POST ['brokenPrice'] [$requestItem->equipment_id] )) {
+								$requestItem->broken_price = $_POST ['brokenPrice'] [$requestItem->equipment_id];
+							}
+							if (isset ( $_POST ['brokenRemark'] [$requestItem->equipment_id] )) {
+								$requestItem->remark = $_POST ['brokenRemark'] [$requestItem->equipment_id];
+							}
+
+							$requestItem->return_date = time ();
+							if (! $requestItem->save ()) {
+								$addSuccess = false;
+							}
+						}
+					}
+				}
+			}
+
+			$criteria = new CDbCriteria ();
+			$criteria->condition = "request_borrow_equipment_type.request_borrow_id ='" . $id . "'";
+			$requestBorrowEquipmentTypeItems = RequestBorrowEquipmentTypeItem::model ()->with ( array (
+					'request_borrow_equipment_type'
+			) )->findAll ( $criteria );
+			$isReturnAll = true;
+			if (isset ( $requestBorrowEquipmentTypeItems )) {
+				foreach ( $requestBorrowEquipmentTypeItems as $requestBorrowEquipmentTypeItem ) {
+					if ($requestBorrowEquipmentTypeItem->return_date == '') {
+						$isReturnAll = false;
+						break;
+					}
+				}
+			}
+			$status = '';
+			if ($isReturnAll) {
+				$status = 'R_B_NEW_RETURNED';
+			} else {
+				$status = 'R_B_NEW_RETURNED_MISSING';
+			}
+			$requestBorrow = RequestBorrow::model ()->findbyPk ( $id );
+			if (isset ( $requestBorrow )) {
+				$requestBorrow->status_code = $status;
+				$requestBorrow->save ();
+			}
+
+			if ($addSuccess) {
+				$transaction->commit ();
+				$this->redirect ( Yii::app ()->createUrl ( 'RequestBorrowNew/View/id/' . $id ) );
+			} else {
+				$transaction->rollback ();
+				$this->redirect ( Yii::app ()->createUrl ( 'RequestBorrowNew/Return/id/' . $id ) );
+			}
+		} else {
+			$data = RequestBorrow::model ()->findByPk ( addslashes ( $_GET ['id'] ) );
+			$availableReturnStatus = array (
+					'R_B_NEW_READY',
+					'R_B_NEW_READY_MISSING',
+					'R_B_NEW_RETURNED_MISSING'
+			);
+			if (! in_array ( $data->status_code, $availableReturnStatus )) {
+				throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+						'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+				) ) );
+			}
+
+
+			$this->render ( 'return', array (
+					'data' => $data
+			) );
+		}
+	}
+	public function actionListApprove() {
+		// Authen Login
+		if (! UserLoginUtil::isLogin ()) {
+			$this->redirect ( Yii::app ()->createUrl ( 'management/login' ) );
+		}
+		if (! UserLoginUtil::hasPermission ( array (
+				"FULL_ADMIN",
+				"UPDATE_REQUEST_BORROW"
+		) )) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+		// Render
+		$model = new RequestBorrow ();
+		$model->status_for_approve = true;
+		$model->clearDateFilter ();
+
+		$this->render ( 'approve', array (
+				'data' => $model
+		) );
+	}
+	public function actionApproveRequest() {
+		// Authen Login
+		if (! UserLoginUtil::isLogin ()) {
+			$this->redirect ( Yii::app ()->createUrl ( 'management/login' ) );
+		}
+		if (! UserLoginUtil::hasPermission ( array (
+				"FULL_ADMIN",
+				"UPDATE_REQUEST_BORROW"
+		) )) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+
+		$this->redirect ( Yii::app ()->createUrl ( 'RequestBorrowNew/ListApprove' ) );
+	}
+	public function actionDisapproveRequest() {
+		// Authen Login
+		if (! UserLoginUtil::isLogin ()) {
+			$this->redirect ( Yii::app ()->createUrl ( 'management/login' ) );
+		}
+		if (! UserLoginUtil::hasPermission ( array (
+				"FULL_ADMIN",
+				"UPDATE_REQUEST_BORROW"
+		) )) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+
+		$this->redirect ( Yii::app ()->createUrl ( 'RequestBorrowNew/ListApprove' ) );
+	}
+	public function actionApprove() {
+		// Authen Login
+		if (! UserLoginUtil::isLogin ()) {
+			$this->redirect ( Yii::app ()->createUrl ( 'management/login' ) );
+		}
+
+		if (! UserLoginUtil::hasPermission ( array (
+				"FULL_ADMIN",
+				"VIEW_REQUEST_BORROW",
+				"VIEW_ALL_REQUEST_BORROW"
+		) )) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+
+		// Render
+		$model = $this->loadModel ();
+
+		if (isset ( $_POST ['submit'] )) {
+			$submit = $_POST ['submit'];
+			$id = $_GET ['id'];
+			$status = '';
+			$nextApproveId = "";
+
+			$hasNextApprove = true;
+			if ($model->status_code == 'R_B_NEW_WAIT_APPROVE_1') {
+				if ($submit == 'Approve') {
+					$status = 'R_B_NEW_WAIT_APPROVE_2';
+
+					//get Request User role
+					$requestUser = UserLogin::model()->findByPk($model->user_login_id);
+					if(isset($requestUser)){
+						if($requestUser->role_id== 3){
+
+							$userApprover = UserLogin::model()->findAll(array('condition'=>"ApproverType in (1) and isApprover_2=1"));
+							if (isset ( $userApprover ) && count ( $userApprover ) > 0) {
+								$nextApproveId = $userApprover[0]->id;
+							}else{
+								echo 'Student Approver is empty.';
+							}
+
+						}else{
+
+							$userApprover = UserLogin::model()->findAll(array('condition'=>"ApproverType in (2) and isApprover_2=1"));
+							if (isset ( $userApprover ) && count ( $userApprover ) > 0) {
+								$nextApproveId = $userApprover[0]->id;
+							}else{
+								echo 'Staff Approver is empty.';
+							}
+
+						}
+					}
+
+				} else {
+					$status = 'R_B_NEW_DISAPPROVE';
+					$hasNextApprove = false;
+				}
+			} else if ($model->status_code == 'R_B_NEW_WAIT_APPROVE_2') {
+				if ($submit == 'Approve') {
+					$status = 'R_B_NEW_PREPARE';
+					$hasNextApprove = false;
+				} else {
+					$status = 'R_B_NEW_DISAPPROVE';
+					$hasNextApprove = false;
+				}
+			}
+
+			$model->status_code = $status;
+			$model->approve_by = $nextApproveId;// UserLoginUtil::getUserLoginId ();
+			if ($model->save ()) {
+
+				if (CommonUtil::isEmpty ( $nextApproveId )) {
+					$nextApproveId = '1';
+				}
+				RequestUtil::deleteAllRequestLinkKey ( $model->id );
+				$stausObj = Status::model ()->findByPk ( $status );
+
+				if ($submit == 'Approve') {
+					$content = MailUtil::getBorrowStatusChangeMailContent ( $model );
+					MailUtil::sendMail ( $model->user_login->email, 'Support AV-Online, Request Booking Status Approve', $content );
+					if ($hasNextApprove) {
+						RequestUtil::sendApproveLink ( $model->id, $nextApproveId );
+					}
+				} else {
+					$content = MailUtil::getBorrowStatusChangeMailContent ( $model );
+					MailUtil::sendMail ( $model->user_login->email, 'Support AV-Online, Request Booking Status Disapprove', $content );
+				}
+
+				$this->redirect ( Yii::app ()->createUrl ( 'RequestBorrowNew/View/id/' . $id ) );
+					
+			} else {
+				$this->redirect ( Yii::app ()->createUrl ( 'RequestBorrowNew/Approve/id/' . $id ) );
+			}
+
+		} else {
+			$this->render ( 'approve_item', array (
+					'data' => $model
+			) );
+		}
+	}
+	public function actionPrint() {
+		// Authen Login
+		if (! UserLoginUtil::isLogin ()) {
+			$this->redirect ( Yii::app ()->createUrl ( 'management/login' ) );
+		}
+		if (! UserLoginUtil::hasPermission ( array (
+				"FULL_ADMIN",
+				"VIEW_REQUEST_BORROW",
+				"VIEW_ALL_REQUEST_BORROW"
+		) )) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+		// Render
+		$model = $this->loadModel ();
+		if (! UserLoginUtil::hasPermission ( array (
+				"FULL_ADMIN",
+				"VIEW_ALL_REQUEST_BORROW"
+		) ) && $model->user_login_id != UserLoginUtil::getUserLoginId ()) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+
+		$setting = Setting::model()->findByPk(1);
+
+		$this->layout = 'ajax2';
+		$this->render ( ($setting->print_format == "1")?  'print_themal':'print', array (
+				'data' => $model
+		) );
+	}
+	public function actionDelete() {
+		// Authen Login
+		if (! UserLoginUtil::isLogin ()) {
+			$this->redirect ( Yii::app ()->createUrl ( 'management/login' ) );
+		}
+
+		$model = $this->loadModel ();
+		if (! UserLoginUtil::areUserRole ( array (
+				UserRoles::ADMIN,
+				UserRoles::STAFF_AV
+		) ) && $model->user_login_id != UserLoginUtil::getUserLoginId ()) {
+			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+			) ) );
+		}
+// 		if (in_array ( $model->status_code, array (
+// 				'R_B_NEW_CANCELLED',
+// 				'R_B_NEW_RETURNED_MISSING',
+// 				'R_B_NEW_RETURNED',
+// 				'R_B_NEW_READY',
+// 				'R_B_NEW_READY_MISSING'
+// 		) )) {
+// 			throw new CHttpException ( 404, Yii::t ( 'yii', 'The system is unable to find the requested', array (
+// 					'{action}' => $actionID == '' ? $this->defaultAction : $actionID
+// 			) ) );
+// 		}
+		$model->status_code = 'R_B_NEW_CANCELLED';
+		$model->save ();
+		$this->redirect ( Yii::app ()->createUrl ( 'RequestBorrowNew/View/id/' . $model->id ) );
+	}
+	public function actionApproveExternal() {
+		// $this->layout='main';
+		$key = $_GET ['key'];
+		$requestBorrowApproveLinks = RequestBorrowApproveLink::model ()->findAll ( array (
+				'condition' => "request_key='" . $key . "'"
+		) );
+		if (isset ( $requestBorrowApproveLinks ) && count ( $requestBorrowApproveLinks ) > 0) {
+			$requestBorrowApproveLink = $requestBorrowApproveLinks [0];
+			$requestBorrow = RequestBorrow::model ()->findByPk ( $requestBorrowApproveLink->request_borrow_id );
+			if (isset ( $requestBorrow )) {
+				$hasNextApprove = true;
+				$nextApproveId = '';
+				if ($requestBorrow->status_code == 'R_B_NEW_WAIT_APPROVE_1') {
+					// 					echo '#1#';
+					$status = 'R_B_NEW_WAIT_APPROVE_2';
+					//get Request User role
+					$requestUser = UserLogin::model()->findByPk($requestBorrow->user_login_id);
+					if(isset($requestUser)){
+						// 						echo '#2#';
+						if($requestUser->role_id== 3){
+
+							$userApprover = UserLogin::model()->findAll(array('condition'=>"ApproverType in (1) and isApprover_2=1"));
+							if (isset ( $userApprover ) && count ( $userApprover ) > 0) {
+								// 								echo '#3#';
+								$nextApproveId = $userApprover[0]->id;
+							}else{
+								echo 'Student Approver is empty.';
+							}
+
+						}else{
+							// 							echo '#4#';
+							$userApprover = UserLogin::model()->findAll(array('condition'=>"ApproverType in (2) and isApprover_2=1"));
+							if (isset ( $userApprover ) && count ( $userApprover ) > 0) {
+								// 								echo '#5#';
+								$nextApproveId = $userApprover[0]->id;
+							}else{
+								echo 'Staff Approver is empty.';
+							}
+
+						}
+					}
+				} else if ($requestBorrow->status_code == 'R_B_NEW_WAIT_APPROVE_2') {
+					// 					echo '#6#';
+					$status = 'R_B_NEW_PREPARE';
+					$hasNextApprove = false;
+				}
+
+				// 				if ($requestBorrow->approve_by == '') {
+				// 					if (CommonUtil::isEmpty ( $requestBorrow->user_login->parent )) {
+				// 						$requestBorrow->approve_by = '1';
+				// 					} else {
+				// 						$requestBorrow->approve_by = $requestBorrow->user_login->parent;
+				// 					}
+				// 				}
+
+				// 				$userApp = UserLogin::model ()->findByPk ( $requestBorrow->approve_by );
+				// 				if (CommonUtil::isEmpty ( $userApp->parent )) {
+				// 					$nextApproveId = '1';
+				// 				} else {
+				// 					$nextApproveId = $userApp->parent;
+				// 				}
+				// 				echo '#7#'.$nextApproveId;
+				$requestBorrow->approve_by = $nextApproveId;
+				$requestBorrow->status_code = $status;
+				$requestBorrow->update ();
+				RequestUtil::deleteAllRequestLinkKey ( $requestBorrow->id );
+				$stausObj = Status::model ()->findByPk ( $status );
+
+				$content = MailUtil::getBorrowStatusChangeMailContent ( $requestBorrow );
+				MailUtil::sendMail ( $requestBorrow->user_login->email, 'Support AV-Online, Request Booking Status Approve', $content );
+				$_SESSION ['r-message'] = 'The request has been approved.';
+				if ($hasNextApprove) {
+					RequestUtil::sendApproveLink ( $requestBorrow->id, $nextApproveId );
+				}
+			} else {
+				$_SESSION ['r-message'] = 'The request not found.';
+			}
+		} else {
+			$_SESSION ['r-message'] = 'Key not found.';
+		}
+		$this->redirect ( Yii::app ()->createUrl ( 'RequestBorrowNew/ApproveResult' ) );
+	}
+	public function actionDisapproveExternal() {
+		$key = $_GET ['key'];
+		$requestBorrowApproveLinks = RequestBorrowApproveLink::model ()->findAll ( array (
+				'condition' => "request_key='" . $key . "'"
+		) );
+		if (isset ( $requestBorrowApproveLinks ) && count ( $requestBorrowApproveLinks ) > 0) {
+			$requestBorrowApproveLink = $requestBorrowApproveLinks [0];
+			$requestBorrow = RequestBorrow::model ()->findByPk ( $requestBorrowApproveLink->request_borrow_id );
+			if (isset ( $requestBorrow )) {
+				if ($requestBorrow->status_code == 'R_B_NEW_WAIT_APPROVE_1') {
+					$status = 'R_B_NEW_DISAPPROVE';
+				} else if ($requestBorrow->status_code == 'R_B_NEW_WAIT_APPROVE_2') {
+					$status = 'R_B_NEW_DISAPPROVE';
+				}
+
+				$requestBorrow->status_code = $status;
+				$requestBorrow->update ();
+				RequestUtil::deleteAllRequestLinkKey ( $requestBorrow->id );
+				$stausObj = Status::model ()->findByPk ( $status );
+
+				$content = MailUtil::getBorrowStatusChangeMailContent ( $requestBorrow );
+				MailUtil::sendMail ( $requestBorrow->user_login->email, 'Support AV-Online, Request Booking Status Disapprove', $content );
+				$_SESSION ['r-message'] = 'The request has been disapproved.';
+			} else {
+				$_SESSION ['r-message'] = 'The request not found.';
+			}
+		} else {
+			$_SESSION ['r-message'] = 'Key not found.';
+		}
+		$this->redirect ( Yii::app ()->createUrl ( 'RequestBorrowNew/ApproveResult' ) );
+	}
+	public function actionApproveResult() {
+		$this->render ( 'approve_result' );
+	}
+	public function loadModel() {
+		if ($this->_model === null) {
+			if (isset ( $_GET ['id'] ))
+				$this->_model = RequestBorrow::model ()->findbyPk ( $_GET ['id'] );
+			if ($this->_model === null)
+				throw new CHttpException ( 404, 'The requested page does not exist.' );
+		}
+		return $this->_model;
+	}
+
+
+
+}

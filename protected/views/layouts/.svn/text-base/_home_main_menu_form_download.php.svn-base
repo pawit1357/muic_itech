@@ -1,0 +1,39 @@
+<div class="form-download">
+	<div class="head">R2R</div>
+	<?php
+	
+	$links = Link::model()->findAll();
+	$items = array();
+	foreach($links as $link) {
+		$items[count($items)] = array(	'label'=>$link->name,
+							'url'=>Yii::app()->request->baseUrl.'/'.$link->url,
+					);
+	}
+	
+	$this->widget('zii.widgets.CMenu', array(
+			'items'=>$items
+	));
+	
+// 	array(
+// 			array(	'label'=>'AV EQUIPMENT REQUEST FORM',
+// 					'url'=>'#',
+// 			),
+// 			array(	'label'=>'การยืม-คืนพัสดุ (เฉพาะส่วนงานโสตฯ)',
+// 					'url'=>'#',
+// 			),
+// 			array(	'label'=>'ขอใช้บริการงานกราฟฟิค (พิมพ์ 4 สี)',
+// 					'url'=>'#',
+// 			),
+// 			array(	'label'=>'ขอใช้บริการงานกราฟฟิค (ยินดีต้อนรับ)',
+// 					'url'=>'#',
+// 			),
+// 			array(	'label'=>'ขอใช้บริการงานกราฟฟิค (ป้ายบอกทาง)',
+// 					'url'=>'#',
+// 			),
+// 			array(	'label'=>'ขอใช้บริการงานกราฟฟิค (สติ๊กเกอร์)',
+// 					'url'=>'#',
+// 			),
+// 	),
+
+	?>
+</div>

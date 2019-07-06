@@ -144,17 +144,21 @@ class RequestBorrowNewController extends CController {
 					// STUDENT CASE
 					$requestBorrow->status_code = "R_B_NEW_WAIT_APPROVE_1";
 					$sendApproveMail = true;
+					
+					/*
 					// find approver
 					$userApprover = UserLogin::model ()->findAll ( array (
 							'condition' => "ApproverType in (1) and isApprover_1=1"
 					) );
 					if (isset ( $userApprover ) && count ( $userApprover ) > 0) {
-						// 						echo ">>>>>>".$subj_code;
+
 						if ($subj_code == "004") {
 							//Fix only Communication Design send approve to Dr. Permsak Suwanatat
 							$nextApproveId =1383;//AJ.dale.kon $userApprover [1]->id;
 						} else {
-							$nextApproveId =1386;//Aj.arron $userApprover [0]->id;
+							//$nextApproveId =1386;//Aj.arron $userApprover [0]->id;
+							$nextApproveId =253;//Aj.arron $userApprover [0]->id;
+							
 						}
 
 						if ($subj_code == "005") {
@@ -162,10 +166,20 @@ class RequestBorrowNewController extends CController {
 							$nextApproveId =1373;//Aj.Norachai $userApprover [0]->id;
 						}
 
+
 					} else {
 						echo 'STUDENT CASE->Approver is empty.';
 					}
+					*/
+					
+					if(UserLoginUtil::areUserRole ( array (UserRoles::STUDENT_FAA))){
+					    $nextApproveId =1385;//dynaya.bhu@mahidol.ac.th
+					}else if(UserLoginUtil::areUserRole ( array (UserRoles::STUDENT))){
+					    $nextApproveId =1373;//wankwan.pol@mahidol.ac.th
+					}
+
 				}
+				
 
 				$requestBorrow->approve_by = $nextApproveId;
 
@@ -622,11 +636,12 @@ class RequestBorrowNewController extends CController {
 
 								switch($requestUser->role_id)
 								{
+								    case 3://STUDENT
 									case 6://FA STUDENT
 										//GET get approve 2 for student
 										$userApprover = UserLogin::model ()->findAll ( array ('condition' => "ApproverType in (1) and isApprover_2=1") );
 										if (isset ( $userApprover )) {
-											$nextApproveId = $userApprover [0]->id;
+										    $nextApproveId = $userApprover [0]->id;//jerimiah.mor@mahidol.ac.th 
 											$status = 'R_B_NEW_WAIT_APPROVE_2';
 											$hasNextApprove =true;
 											$model->approver2 = $nextApproveId;

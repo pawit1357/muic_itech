@@ -21,7 +21,7 @@ if(UserLoginUtil::isLogin()) {
 		}
 		$strIn = substr($strIn, 0, strlen($strIn) - 1);
 		$strIn = $strIn.')';
-		$rooms = Room::model()->findAll(array('condition' => 'id not in '.$strIn));
+		$rooms = Room::model()->findAll(array('condition' => 'status="A" and id not in '.$strIn));
 		$eventTypes = EventType::model()->findAll();
 		$roomTypes = RoomType::model()->findAll(array('condition' => 'id not in (3)'));//->findAll();
 		$presentTypes = PresentType::model()->findAll();
@@ -140,7 +140,7 @@ if(UserLoginUtil::isLogin()) {
 			onchange="ajaxUpdateArea('<?php echo Yii::app()->createUrl("AjaxRequest/EquipmentInRoom/room")?>/' + this.value, 'equipment-area')">
 				<option value="">--Room--</option>
 				<?php 	
-				$rooms = Room::model()->findAll(array('condition'=>"room_group_id='1'"));
+				$rooms = Room::model()->findAll(array('condition'=>"status='A' and room_group_id='1'"));
 				foreach($rooms as $room){
 					?>
 				<option value="<?php echo $room->id?>"

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/room
+END
+manage_staff.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/room/manage_staff.php
+END
+main.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/room/main.php
+END
+update.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/room/update.php
+END
+create.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/room/create.php
+END
+view.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/771/trunk/itech_av4/protected/views/room/view.php
+END

@@ -35,7 +35,7 @@
 			//defaultDate : '2014-11-12',
 			editable : true,
 			eventLimit : true, // allow "more" link when too many events
-			events : "http://localhost:81/itech/index.php/WebService/BorrowEvents",
+			events : "https://ed.muic.mahidol.ac.th/itech/index.php/WebService/BorrowEvents",
             eventRender: function(event, element) {
             	//alert('start: ' + element.end);
                 element.qtip({

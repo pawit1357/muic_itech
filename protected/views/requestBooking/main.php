@@ -127,15 +127,15 @@ $requestStatuses = Status::model()->findAll(array('condition'=>"t.status_group_i
 				onchange="filter()">
 				<?php 
 				$rooms = RequestBooking::model()->findAll(array(
-			'select'=>'t.room_id',
-    		'group'=>'t.room_id',
+				    'select'=>'t.room_id',
+				    'group'=>'t.room_id',
     		'distinct'=>true,));
 		?>
 				<option value="">- All Room -</option>
 				<?php foreach($rooms as $room) {?>
 				<option value="<?php echo $room->room->id?>"
 				<?php echo $room->room->id == $_GET['room_filter'] ? 'selected="selected"' : ''?>>
-					<?php echo $room->room->name?>
+					<?php echo $room->room->name.','.$room->room->status;?>
 				</option>
 				<?php }?>
 			</select>

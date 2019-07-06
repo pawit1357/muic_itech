@@ -28,7 +28,7 @@ return array(
 						'class'=>'application.extensions.PHPPDO.CPdoDbConnection',
 						'pdoClass' => 'PHPPDO',
 //  						'connectionString' => 'mysql:host=localhost;dbname=prdappne_mvonline_x',
-						'connectionString' => 'mysql:host=localhost;dbname=itech',
+						'connectionString' => 'mysql:host=localhost;dbname=av_itech',
 						'emulatePrepare' => true,
  						'username' => 'root',
  						'password' => 'P@ssw0rd',

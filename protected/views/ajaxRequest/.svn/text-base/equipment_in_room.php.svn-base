@@ -1,0 +1,21 @@
+<?php 
+if(UserLoginUtil::isLogin()) {
+	if($roomId == ''){
+		echo 'Please select room.';
+	} else {
+		$models = Equipment::model()->findAll(array('condition'=>"room_id='".$roomId."'"));
+		$equipementTypes = array();
+		if(count($models) > 0){
+			foreach($models as $model){
+				if(!in_array($model->equipment_type->id,	$equipementTypes)){
+					echo '<div><input type="checkbox" name="equipments[]" '.($_SESSION['request_equipment'] == $model->equipment_type->id ? 'checked="checked"' : '').' value="'.$model->equipment_type->id.'">'.$model->equipment_type->name.'</div>';
+					$equipementTypes[count($equipementTypes)] = $model->equipment_type->id;
+				}
+			}
+		} else {
+			echo "Not found equipment.";
+		}
+		
+	}
+}
+?>

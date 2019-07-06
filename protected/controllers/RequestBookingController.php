@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * SiteController is the default controller to handle user requests.
@@ -67,6 +67,7 @@ class RequestBookingController extends CController {
 		// Render
 		$model = new RequestBooking ();
 		
+		//$model->hiddenPass = true;
 		if (isset ( $_GET ['date_filter'] )) {
 			$model->date_filter = addslashes ( $_GET ['date_filter'] );
 		}
@@ -77,9 +78,9 @@ class RequestBookingController extends CController {
 			$model->room_filter = addslashes ( $_GET ['room_filter'] );
 		}
 		
-		if ($model->date_filter == '') {
-			$model->hiddenPass = true;
-		}
+ 		if ($model->date_filter == '') {
+ 			$model->hiddenPass = true;
+ 		}
 		
 		$this->render ( 'mainall', array (
 				'data' => $model 

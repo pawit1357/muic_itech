@@ -1,0 +1,99 @@
+<div class="module-head">
+	<span>Update Equipment</span>
+</div>
+<div>
+	<?php 
+	$equipmentTypes = EquipmentType::model()->findAll();
+	$rooms = Room::model()->findAll();
+	$form = $this->beginWidget('CActiveForm', array(
+			'id' => 'users-form',
+			'enableAjaxValidation' => true
+	));
+	?>
+	<table class="simple-form">
+		<tr>
+			<td class="column-left" width="15%">Code</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'id', array('size' => 20, 'maxlength' => 255,'value'=>$model->id)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Type</td>
+			<td class="column-right"><select name="Equipment[equipment_type_id]">
+					<option value="">--Select--</option>
+					<?php foreach ($equipmentTypes as $equipmentType) {?>
+					<option value="<?php echo $equipmentType->id?>"
+					<?php echo $model->equipment_type_id == $equipmentType->id ? 'selected="selected"' : ''?>>
+						<?php echo $equipmentType->name?>
+					</option>
+					<?php }?>
+			</select></td>
+		</tr>
+		<tr>
+			<td class="column-left">Room</td>
+			<td class="column-right"><select name="Equipment[room_id]">
+					<option value="">--Select--</option>
+					<?php foreach ($rooms as $room) {?>
+					<option value="<?php echo $room->id?>"
+					<?php echo $model->room_id == $room->id ? 'selected="selected"' : ''?>>
+						<?php echo $room->name?>
+					</option>
+					<?php }?>
+			</select></td>
+		</tr>
+		<tr>
+			<td class="column-left">Name</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'name', array('size' => 20, 'maxlength' => 255,'value'=>$model->name)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Description</td>
+			<td class="column-right"><?php echo $form->textArea(Equipment::model(), 'description', array('value'=>$model->description)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">IP Address</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'ip_address', array('size' => 20, 'maxlength' => 255,'value'=>$model->ip_address)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">MAC Address</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'mac_address', array('size' => 20, 'maxlength' => 255,'value'=>$model->mac_address)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Client User</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'client_user', array('size' => 20, 'maxlength' => 255,'value'=>$model->client_user)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Client Password</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'client_pass', array('size' => 20, 'maxlength' => 255,'value'=>$model->client_pass)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Barcode</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'barcode', array('size' => 40, 'maxlength' => 200,'value'=>$model->barcode)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Status</td>
+			<td class="column-right"><select name="Equipment[status]">
+					<option value="A"
+					<?php echo $model->status == 'A' ? 'selected="selected"' : ''?>>Normal</option>
+					<option value="D"
+					<?php echo $model->status == 'D' ? 'selected="selected"' : ''?>>Cracked</option>
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left"></td>
+			<td class="column-right"><input type="submit" value="Submit" /> <?php echo CHtml::link('Cancel',array('Equipment/'), array('class' => 'button_cancel'))?>
+			</td>
+		</tr>
+	</table>
+	<?php $this->endWidget(); ?>
+</div>
+
+
+
+

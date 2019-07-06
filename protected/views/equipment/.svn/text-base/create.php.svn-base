@@ -1,0 +1,100 @@
+<div class="module-head">
+	<span>Create New Equipment</span>
+</div>
+<div>
+	<?php 
+	$equipmentTypes = EquipmentType::model()->findAll();
+	$rooms = Room::model()->findAll();
+	$form = $this->beginWidget('CActiveForm', array(
+			'id' => 'users-form',
+			'enableAjaxValidation' => true
+	));
+	?>
+	<table class="simple-form">
+		<tr>
+			<td class="column-left" width="15%">Code</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'equipment_code', array('size' => 20, 'maxlength' => 255)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Type</td>
+			<td class="column-right"><select name="Equipment[equipment_type_id]">
+					<option value="">--Select--</option>
+					<?php foreach ($equipmentTypes as $equipmentType) {?>
+					<option value="<?php echo $equipmentType->id?>">
+						<?php echo $equipmentType->name?>
+					</option>
+					<?php }?>
+			</select></td>
+		</tr>
+		<tr>
+			<td class="column-left">Room</td>
+			<td class="column-right"><select name="Equipment[room_id]">
+					<option value="">--Select--</option>
+					<?php foreach ($rooms as $room) {?>
+					<option value="<?php echo $room->id?>">
+						<?php echo $room->name?>
+					</option>
+					<?php }?>
+			</select></td>
+		</tr>
+		<tr>
+			<td class="column-left">Name</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'name', array('size' => 20, 'maxlength' => 255)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Description</td>
+			<td class="column-right"><?php echo $form->textArea(Equipment::model(), 'description', array()); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">IP Address</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'ip_address', array('size' => 20, 'maxlength' => 255)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Mac Address</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'mac_address', array('size' => 20, 'maxlength' => 255)); ?>
+				<span>format XX:XX:XX:XX:XX:XX</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Client User</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'client_user', array('size' => 20, 'maxlength' => 255)); ?>
+				<!-- 			<span>format XX:XX:XX:XX:XX:XX</span> -->
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Client Password</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'client_pass', array('size' => 20, 'maxlength' => 255)); ?>
+				<!-- 			<span>format XX:XX:XX:XX:XX:XX</span> -->
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Barcode</td>
+			<td class="column-right"><?php echo $form->textField(Equipment::model(), 'barcode', array('size' => 40, 'maxlength' => 255)); ?>
+				<!-- 			<span>format XX:XX:XX:XX:XX:XX</span> -->
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left">Status</td>
+			<td class="column-right"><select name="Equipment[status]">
+					<option value="">-Select-</option>
+					<option value="A">Normal</option>
+					<option value="D">Cracked</option>
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-left"></td>
+			<td class="column-right"><input type="submit" value="Submit" /> <?php echo CHtml::link('Cancel',array('Equipment/'), array('class' => 'button_cancel'))?>
+			</td>
+		</tr>
+	</table>
+	<?php $this->endWidget(); ?>
+</div>
+
+
+
+

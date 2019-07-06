@@ -1,13 +1,5 @@
 ﻿<?php
-/*
- * $eqs = $_POST['eqs'];
- * if(count($eqs) > 0) {
- * foreach($eqs as $key => $val) {
- * $eqType = EquipmentType::model()->findByPk($key);
- * echo $eqType->name.'==='.$val . '--<br>';
- * }
- * }
- */
+echo UserLoginUtil::getUserRoleName () 
 ?>
 
 
@@ -43,7 +35,7 @@ $(function(){
 	
 	$minDate = 0;
 
-	if( user_role == 'StudentFAA' ){
+	if( user_role == 'StudentFAA' ||user_role == 'Student' ){
 
 		$minDate =3;
 		
@@ -63,38 +55,6 @@ $(function(){
 		var equipmentList = $('#equipmentList').html();
 		var validateMobile_phone = $('#mobile_phone').val();
 
-/*
-
-		var now = new Date();	    
-//11-12-2016
-var bd = $('#from_date').val();
-var dBd = new Date(parseInt(bd.substring(6)),        // Year
-                  parseInt(bd.substring(3, 5)) - 1, // Month (0-11)
-                  parseInt(bd.substring(0, 2)));    // Day
-var ed = $('#thru_date').val();
-var dEd = new Date(parseInt(ed.substring(6)),        // Year
-                   parseInt(ed.substring(3, 5)) - 1, // Month (0-11)
-                   parseInt(ed.substring(0, 2)));    // Day
-                  
-
-                  
-                   var msDiff = dEd - dBd; // 172800000, this is time in milliseconds
-                   var daysDiff = msDiff / 1000 / 60 / 60 / 24; // 2 days
-
-                   var count = now - dBd; // 172800000, this is time in milliseconds
-                   var countBorrowBeforeCurrentDate = count / 1000 / 60 / 60 / 24; // 2 days
-                   
-//check borrow before current date      
-if(countBorrowBeforeCurrentDate < 0 ){
-	alert("Not allowed to borrow back.");
-	return false;
-}
-//check don't allow borrow over 5 day
-                   if($minDate>0 && daysDiff>4){
-                		alert("Not allowed to borrow over 5 day.");
-                		return false;
-                                      }
-*/
                    
 		if( validateFromDate == "" ){
 			alert('Please enter from date.');
@@ -128,7 +88,7 @@ if(countBorrowBeforeCurrentDate < 0 ){
 	       var fromDate = $('#from_date').datepicker('getDate');
 	       var toDate = $('#thru_date').datepicker('getDate');	
 
-	       if( user_role == 'StudentFAA' ){
+	       if( user_role == 'StudentFAA' ||user_role == 'Student' ){
 				if( validateSubject == 0 ){
 					alert('Please select subject.');
 					$('#teacher_id').focus();
@@ -142,7 +102,7 @@ if(countBorrowBeforeCurrentDate < 0 ){
 			return false;
 		}
        
-       if( user_role == 'StudentFAA' ){
+       if( user_role == 'StudentFAA' ||user_role == 'Student' ){
            
             var today = new Date();
             var diff = Math.floor(( fromDate - today ) / (1000 * 60 * 60 * 24))+1;
@@ -304,7 +264,7 @@ if(countBorrowBeforeCurrentDate < 0 ){
 	       var fromDate = $('#from_date').datepicker('getDate');
 	       var toDate = $('#thru_date').datepicker('getDate');	
 
-	       if( user_role == 'StudentFAA' ){
+	       if( user_role == 'StudentFAA' ||user_role == 'Student' ){
 				if( validateSubject == 0 ){
 					alert('Please select subject.');
 					$('#teacher_id').focus();
@@ -318,7 +278,7 @@ if(countBorrowBeforeCurrentDate < 0 ){
 			return false;
 		}
        
-       if( user_role == 'StudentFAA' ){
+       if( user_role == 'StudentFAA' ||user_role == 'Student' ){
            
             var today = new Date();
             var diff = Math.floor(( fromDate - today ) / (1000 * 60 * 60 * 24))+1;
@@ -332,22 +292,6 @@ if(countBorrowBeforeCurrentDate < 0 ){
             
        }
        
-/*
-       else{
-           var diff1 = Math.floor(( toDate - fromDate ) / (1000 * 60 * 60 * 24));
-           if( diff1 > 0 ){
-               var today = new Date();
-               var diff = Math.floor(( fromDate - today ) / (1000 * 60 * 60 * 24))+1;
-               if( diff < 2 ){
-               	alert('Please borrow 3 day before use date.');
-               	$('#from_date').val('');
-               	 $('#thru_date').val('');
-               	 $('#from_date').focus();
-               	return false;
-               }
-           }
-       }
-*/
 
 	}
 });
@@ -418,7 +362,7 @@ if(countBorrowBeforeCurrentDate < 0 ){
 	
 </script>
 <?php
-$subjects = Subject::model ()->findAll ();
+$subjects = Subject::model ()->findAll (array("condition"=>"status = 'A'"));
 $eventTypes = EventType::model ()->findAll ();
 
 ?>
@@ -473,7 +417,7 @@ $eventTypes = EventType::model ()->findAll ();
 		<?php
 	
 	if (UserLoginUtil::areUserRole ( array (
-			UserRoles::STUDENT_FAA 
+	    UserRoles::STUDENT_FAA , UserRoles::STUDENT
 	) )) {
 		
 		?>
@@ -520,7 +464,7 @@ $eventTypes = EventType::model ()->findAll ();
 				width="10px" value="Add Equipment" /></td>
 		</tr>
 			<?php
-	if (UserLoginUtil::getUserRoleName () == 'StudentFAA') {
+			if (UserLoginUtil::getUserRoleName () == 'StudentFAA' || UserLoginUtil::getUserRoleName () == 'Student') {
 		?>
 		<tr>
 			<td></td>

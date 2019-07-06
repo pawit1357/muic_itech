@@ -78,6 +78,10 @@ $(function() {
 	) );
 	?>
 	<table class="simple-form">
+		<!-- 		<tr> -->
+		<!-- 			<td class="column-left" width="15%">Code</td> -->
+		<td class="column-right"><?//php echo $form->textField(Equipment::model(), 'equipment_code', array('size' => 20, 'maxlength' => 255)); ?>
+<!-- 			</td> --> <!-- 		</tr> -->
 		
 		<tr>
 			<td class="column-left">Type</td>

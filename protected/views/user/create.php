@@ -115,6 +115,14 @@ $(function(){
 				<?php echo $model->ApproverType == "1" ? 'checked' : ''?>>
 				Staff/Lecturer<br></td>
 		</tr>
+		<tr>
+			<td class="column-left" width="20%">LDAP</td>
+			<td class="column-right">
+                <input type="radio" name="UserLogin[bypass_ldap]" value="0" <?php echo $model->bypass_ldap == "0" ? 'checked' : ''?>>ไม่ตรวจสอบ LDAP<br>
+                <input type="radio" name="UserLogin[bypass_ldap]" value="1" <?php echo $model->bypass_ldap == "1" ? 'checked' : ''?>>ตรวจสอบ LDAP
+            <br>
+            </td>
+		</tr>
 		<tr class="seperate">
 			<td colspan="2"><div>Personal Information</div></td>
 		</tr>

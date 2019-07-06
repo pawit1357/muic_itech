@@ -62,7 +62,7 @@ class UserLogin extends CActiveRecord
 						'user_information_email_search,'.
 						'role_name_search,status_name_search', 'safe', 'on'=>'search' ),
 				array('username,parent, password, role_id, email', 'required'),
-				array('username,parent, password, role_id, email,isApprover_1,isApprover_2,ApproverType', 'safe'),
+				array('username,parent, password, role_id, email,isApprover_1,isApprover_2,ApproverType,bypass_ldap', 'safe'),
 		);
 	}
 
