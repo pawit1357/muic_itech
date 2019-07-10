@@ -363,7 +363,7 @@ $(function(){
 </script>
 <?php
 $subjects = Subject::model ()->findAll (array("condition"=>"status = 'A'"));
-$eventTypes = EventType::model ()->findAll ();
+$eventTypes = EventType::model ()->findAll (array("condition"=>"status = 'A'"));
 
 ?>
 

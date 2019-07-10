@@ -41,9 +41,9 @@ return array(
 				 * */
 				'Smtpmail'=>array(
 						'class'=>'application.extensions.smtpmail.PHPMailer',
-						'Host'=>"sawebmail.mahidol.ac.th",						
-						'Username'=>'chayanon.poo',
-						'Password'=>'11111ccccc',						
+						'Host'=>"mumail.mahidol.ac.th",						
+						'Username'=>'icet@mahidol.ac.th',
+						'Password'=>'2b8526ta',						
 						'Port'=>587,
 						'SMTPAuth'=>true,
 						'SMTPSecure'=>'tls',
