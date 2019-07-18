@@ -218,7 +218,8 @@ class RequestBorrowNewController extends CController {
 
 					// Send Mail to owner
 					$content = MailUtil::getBorrowDetailMailContent ( $model );
-					// 					echo $model->user_login->email ."XX2XX".$content;
+// 					echo "===".$content;
+					
 					if (isset ( $model->user_login->email )) {
 						MailUtil::sendMail ( $model->user_login->email, 'Support AV-Online, Request Borrow Result', $content );
 					}
@@ -825,6 +826,7 @@ class RequestBorrowNewController extends CController {
 						RequestUtil::deleteAllRequestLinkKey ( $requestBorrow->id );
 
 						$content = MailUtil::getBorrowStatusChangeMailContent ( $requestBorrow );
+						echo "===".$content;
 						MailUtil::sendMail ( $requestBorrow->user_login->email, 'Support AV-Online, Request Booking Status Approve', $content );
 						$_SESSION ['r-message'] = 'The request has been approved.';
 						if ($hasNextApprove) {

@@ -3,23 +3,21 @@ class MailUtil {
 
 	public static function sendMail($emailAddress, $subject, $content) {
 		
-// 		5280701>pawit1357@hotamil.com
-// 		aaron>pawitvaap@gmail.com
-// 		norachai>kamew.cat@gmail.com
 		
-// 		$mail = Yii::app ()->Smtpmail;
-// 		$mail->IsSMTP ();
-// 		$mail->SetFrom ( 'chayanon.poo@mahidol.ac.th', 'Technology Education Section' );
-// 		$mail->Subject = $subject;
-// 		$mail->MsgHTML ( $content );
-// 		$mail->ClearAddresses ();
-// 		$mail->AddAddress ( $emailAddress, "" );
-// 		if ($mail->Send ()) {
-// 			return true;
-// 		} else {
-// 			return false; 
-// 		}
- 		echo "SEND MAIL>>>>".$emailAddress;
+		$mail = Yii::app ()->Smtpmail;
+		$mail->IsSMTP ();
+		$mail->SetFrom ( 'icet@mahidol.ac.th', 'Technology Education Section' );
+		$mail->Subject = $subject;
+		$mail->MsgHTML ( $content );
+		$mail->ClearAddresses ();
+		$mail->AddAddress ( $emailAddress, "" );
+		if ($mail->Send ()) {
+			return true;
+		} else {
+			return false; 
+		}
+
+//  		echo "SEND MAIL>>>>".$emailAddress;
 		return true;
 	}
 
@@ -38,8 +36,13 @@ class MailUtil {
 		if you don't want more than 1 para, just put NULL in unused $subjectPara variables.
 		*/
 
+		$dearText = "User";
+		if( $requestBorrow->user_login->isApprover_1="1" ||  $requestBorrow->user_login->isApprover_2="1"){
+		    $dearText="Approver";
+		}
+		
 		$dearUser = UserLogin::model ()->findByPk ( $requestBorrow->approve_by );
-		$subjectPara1 = '<br><br>Dear ' .$dearUser->user_information->first_name . ',<br><p>Has request to borrow equipment.Here is the request detail</p>' .
+		$subjectPara1 = '<br><br>Dear ' .$dearText. ',<br><p>Has request to borrow equipment.Here is the request detail</p>' .
 				'<table>
 				<tr>
 				<td style="text-align: right;color: #000000;">Request Date : </td>
@@ -165,8 +168,16 @@ class MailUtil {
 		$subjectPara1 means 'first paragraph in message body', $subjectPara2 means'first paragraph in message body',
 		if you don't want more than 1 para, just put NULL in unused $subjectPara variables.
 		*/
+		
+        $dearText = "User";
+        if (strcmp($requestBorrow->user_login->isApprover_1, '1') == 0) {
+            $dearText = "Approver";
+        } else if (strcmp($requestBorrow->user_login->isApprover_2, '1') == 0) {
+            $dearText = "Approver";
+        }
+		
 		$dearUser = UserLogin::model ()->findByPk ($requestBorrow->user_login->id); //UserLogin::model ()->findByPk ( $requestBorrow->approve_by );
-		$subjectPara1 = '<br><br>Dear ' . $dearUser->user_information->first_name . ',<br><p>Has request to borrow equipment.Here is the request detail</p>' .
+		$subjectPara1 = '<br><br>Dear ' . $dearText . ',<br><p>Has request to borrow equipment.Here is the request detail</p>' .
 				'<table>
 				<tr>
 				<td style="text-align: right;color: #000000;">Request Date : </td>
@@ -346,8 +357,14 @@ class MailUtil {
 		$subjectPara1 means 'first paragraph in message body', $subjectPara2 means'first paragraph in message body',
 		if you don't want more than 1 para, just put NULL in unused $subjectPara variables.
 		*/
+		$dearText = "User";
+		if( $requestBorrow->user_login->isApprover_1="1" ||  $requestBorrow->user_login->isApprover_2="1"){
+		    $dearText="Approver";
+		}
+		
+		
 		$dearUser = UserLogin::model ()->findByPk ( $requestBorrow->approve_by );
-		$subjectPara1 = '<br><br>Dear ' . $dearUser->user_information->first_name . ',<br><p>Has request to borrow equipment.Here is the request detail</p>' .
+		$subjectPara1 = '<br><br>Dear ' . $dearText . ',<br><p>Has request to borrow equipment.Here is the request detail</p>' .
 				'<table>
 				<tr>
 				<td style="text-align: right;color: #000000;">Request Date : </td>
