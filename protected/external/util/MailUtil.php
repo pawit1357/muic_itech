@@ -4,20 +4,20 @@ class MailUtil {
 	public static function sendMail($emailAddress, $subject, $content) {
 		
 		
-		$mail = Yii::app ()->Smtpmail;
-		$mail->IsSMTP ();
-		$mail->SetFrom ( 'icet@mahidol.ac.th', 'Technology Education Section' );
-		$mail->Subject = $subject;
-		$mail->MsgHTML ( $content );
-		$mail->ClearAddresses ();
-		$mail->AddAddress ( $emailAddress, "" );
-		if ($mail->Send ()) {
-			return true;
-		} else {
-			return false; 
-		}
+		// $mail = Yii::app ()->Smtpmail;
+		// $mail->IsSMTP ();
+		// $mail->SetFrom ( 'icet@mahidol.ac.th', 'Technology Education Section' );
+		// $mail->Subject = $subject;
+		// $mail->MsgHTML ( $content );
+		// $mail->ClearAddresses ();
+		// $mail->AddAddress ( $emailAddress, "" );
+		// if ($mail->Send ()) {
+		// 	return true;
+		// } else {
+		// 	return false; 
+		// }
 
-//  		echo "SEND MAIL>>>>".$emailAddress;
+ 		echo "SEND MAIL>>>>".$emailAddress;
 		return true;
 	}
 

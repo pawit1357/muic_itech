@@ -1,9 +1,4 @@
-﻿<?php
-echo UserLoginUtil::getUserRoleName () 
-?>
-
-
-<div class="module-head">
+﻿<div class="module-head">
 	<span>Borrow</span>
 </div>
 

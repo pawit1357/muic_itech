@@ -75,7 +75,7 @@ class RequestBorrowNewController extends CController {
 				// Add Request
 				$sendApproveMail = false;
 				// $lecturerEmail;
-				$subj_code;
+				// $subj_code;
 				$nextApproveId = - 1;
 
 				$requestBorrow = new RequestBorrow ();
@@ -171,12 +171,20 @@ class RequestBorrowNewController extends CController {
 						echo 'STUDENT CASE->Approver is empty.';
 					}
 					*/
-					
-					if(UserLoginUtil::areUserRole ( array (UserRoles::STUDENT_FAA))){
-					    $nextApproveId =1385;//dynaya.bhu@mahidol.ac.th
-					}else if(UserLoginUtil::areUserRole ( array (UserRoles::STUDENT))){
-					    $nextApproveId =1373;//wankwan.pol@mahidol.ac.th
-					}
+					// if(UserLoginUtil::areUserRole ( array (UserRoles::STUDENT_FAA))){
+						if ($subj_code == "004") {
+							$nextApproveId =1385;//AJ.dale.kon $userApprover [1]->id;
+						} else if ($subj_code == "005") {
+							$nextApproveId =1373;//wankwan.pol@mahidol.ac.th
+						}
+					// }else if(UserLoginUtil::areUserRole ( array (UserRoles::STUDENT))){
+					//     $nextApproveId =1373;//wankwan.pol@mahidol.ac.th
+					// }
+					// if(UserLoginUtil::areUserRole ( array (UserRoles::STUDENT_FAA))){
+					//     $nextApproveId =1385;//dynaya.bhu@mahidol.ac.th
+					// }else if(UserLoginUtil::areUserRole ( array (UserRoles::STUDENT))){
+					//     $nextApproveId =1373;//wankwan.pol@mahidol.ac.th
+					// }
 
 				}
 				
